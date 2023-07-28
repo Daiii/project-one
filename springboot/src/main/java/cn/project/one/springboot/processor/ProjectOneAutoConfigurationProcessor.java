@@ -22,14 +22,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 
-import cn.hutool.core.convert.Convert;
 import cn.project.one.api.Feign;
-import cn.project.one.api.common.ConsulRegisterParam;
 import cn.project.one.common.config.ProjectOneProperties;
 import cn.project.one.common.util.BeanUtil;
 import cn.project.one.common.util.ClassUtil;
-import cn.project.one.common.util.InetUtil;
-import cn.project.one.core.consul.ConsulClient;
 import cn.project.one.core.factory.FeignServiceFactoryBean;
 import cn.project.one.core.scanner.InterfaceScanner;
 

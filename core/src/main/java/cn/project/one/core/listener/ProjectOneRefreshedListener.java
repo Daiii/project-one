@@ -7,6 +7,7 @@ import org.springframework.core.env.Environment;
 
 import cn.hutool.core.convert.Convert;
 import cn.project.one.api.common.ConsulRegisterParam;
+import cn.project.one.common.config.ConsulProperties;
 import cn.project.one.common.config.ProjectOneProperties;
 import cn.project.one.common.util.InetUtil;
 import cn.project.one.core.consul.ConsulClient;
@@ -32,7 +33,8 @@ public class ProjectOneRefreshedListener implements ApplicationListener<ContextR
         int port = Convert.toInt(environment.getProperty("server.port"), 8080);
         String id = InetUtil.getHost();
         ConsulRegisterParam consulRegisterParam = new ConsulRegisterParam(id, name, address, port);
-        ConsulClient.register(properties.getAddress(), properties.getPort(), consulRegisterParam);
+        ConsulProperties consul = properties.getConsul();
+        ConsulClient.register(consul.getAddress(), consul.getPort(), consulRegisterParam);
     }
 
     @Override

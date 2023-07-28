@@ -16,11 +16,11 @@ public class ProjectOneProperties {
 
     public static final String PREFIX = "project.one";
 
+    public static final String CONSUL = "project.one.consul";
+
     String name;
 
-    String address;
-
-    int port = 8500;
-
     String corn = "*/10 * * * * *";
+
+    private ConsulProperties consul;
 }

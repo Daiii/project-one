@@ -6,6 +6,7 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.core.env.Environment;
 
+import cn.project.one.common.config.ConsulProperties;
 import cn.project.one.common.config.ProjectOneProperties;
 import cn.project.one.common.util.InetUtil;
 import cn.project.one.core.consul.ConsulClient;
@@ -20,7 +21,8 @@ public class ProjectOneClosedListener implements ApplicationListener<ContextClos
             Binder.get(environment).bind(ProjectOneProperties.PREFIX, ProjectOneProperties.class).get();
 
         String id = InetUtil.getHost();
-        ConsulClient.deregister(properties.getAddress(), properties.getPort(), id);
+        ConsulProperties consul = properties.getConsul();
+        ConsulClient.deregister(consul.getAddress(), consul.getPort(), id);
     }
 
     @Override
