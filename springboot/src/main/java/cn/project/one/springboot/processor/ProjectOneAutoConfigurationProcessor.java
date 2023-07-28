@@ -52,7 +52,6 @@ public class ProjectOneAutoConfigurationProcessor
         startClass = ClassUtil.deduceMainApplicationClass();
         scanPackages = getScanPackages();
 
-        registerService();
         registerFeign(beanDefinitionRegistry);
     }
 
@@ -60,21 +59,6 @@ public class ProjectOneAutoConfigurationProcessor
     public void postProcessBeanFactory(ConfigurableListableBeanFactory configurableListableBeanFactory)
         throws BeansException {
 
-    }
-
-    /**
-     * 注册服务
-     */
-    private void registerService() {
-        ProjectOneProperties properties =
-            Binder.get(environment).bind(ProjectOneProperties.PREFIX, ProjectOneProperties.class).get();
-
-        String name = environment.getProperty("spring.application.name");
-        String address = InetUtil.getHost();
-        int port = Convert.toInt(environment.getProperty("server.port"), 8080);
-        String id = InetUtil.getHost();
-        ConsulRegisterParam consulRegisterParam = new ConsulRegisterParam(id, name, address, port);
-        ConsulClient.register(properties.getAddress(), properties.getPort(), consulRegisterParam);
     }
 
     /**
