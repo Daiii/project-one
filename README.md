@@ -35,7 +35,7 @@ project.one.cron=*/10 * * * * *
 @Feign(name = "project-one-test")
 public interface IndexService() {
 
-    @FeignMapping('/sayHello')
+    @Mapping('/sayHello')
     String sayHello();
 }
 ```
