@@ -2,7 +2,7 @@
 
 ## 概要信息
 
-兼容Spring Boot，服务注册(consul)。
+兼容Spring Boot，服务注册(consul)，RPC调用(http)。
 
 ## 指南
 
