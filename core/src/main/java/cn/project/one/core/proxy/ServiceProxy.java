@@ -22,8 +22,6 @@ public class ServiceProxy implements InvocationHandler {
 
     private DefaultParameterNameDiscoverer discoverer = new DefaultParameterNameDiscoverer();
 
-    private final ProjectOneProperties properties;
-
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         Feign feign = method.getDeclaringClass().getAnnotation(Feign.class);
@@ -43,7 +41,5 @@ public class ServiceProxy implements InvocationHandler {
         return body;
     }
 
-    public ServiceProxy(ProjectOneProperties properties) {
-        this.properties = properties;
-    }
+    public ServiceProxy(ProjectOneProperties properties) {}
 }
