@@ -9,7 +9,7 @@ import org.springframework.core.DefaultParameterNameDiscoverer;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpUtil;
 import cn.project.one.api.Feign;
-import cn.project.one.api.FeignMapping;
+import cn.project.one.api.Mapping;
 import cn.project.one.common.config.ProjectOneProperties;
 import cn.project.one.common.instance.Instance;
 import cn.project.one.core.loadbalance.RandomBalance;
@@ -25,7 +25,7 @@ public class ServiceProxy implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         Feign feign = method.getDeclaringClass().getAnnotation(Feign.class);
-        FeignMapping mapping = method.getAnnotation(FeignMapping.class);
+        Mapping mapping = method.getAnnotation(Mapping.class);
         Instance instance = RandomBalance.get(Instances.getGroup(feign.name()));
         String url = instance.getAddress() + ":" + instance.getPort();
         HttpRequest request = HttpUtil.createRequest(mapping.method(), url + mapping.value());

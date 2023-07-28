@@ -11,7 +11,7 @@ import cn.hutool.http.Method;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 @Documented
-public @interface FeignMapping {
+public @interface Mapping {
 
     String value();
 
