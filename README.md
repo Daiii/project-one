@@ -21,8 +21,8 @@
 ### 参数配置
 
 ```properties
-project.one.address=127.0.0.1
-project.one.port=8500
+project.one.consul.address=127.0.0.1
+project.one.consul.port=8500
 project.one.cron=*/10 * * * * *
 ```
 
