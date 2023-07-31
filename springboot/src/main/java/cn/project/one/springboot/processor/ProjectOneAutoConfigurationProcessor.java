@@ -53,7 +53,7 @@ public class ProjectOneAutoConfigurationProcessor
     }
 
     /**
-     * 注入消费者
+     * 注入服务
      *
      * @param registry registry
      */
