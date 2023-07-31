@@ -18,7 +18,6 @@ import cn.project.one.api.annotation.Mapping;
 import cn.project.one.api.annotation.Param;
 import cn.project.one.api.annotation.ReqBody;
 import cn.project.one.api.annotation.RespBody;
-import cn.project.one.common.config.ProjectOneProperties;
 import cn.project.one.common.instance.Instance;
 import cn.project.one.core.loadbalance.RandomBalance;
 import cn.project.one.core.service.ServiceList;
@@ -44,7 +43,7 @@ public class ServiceProxy implements InvocationHandler {
 
         HttpRequest request = HttpUtil.createRequest(mapping.method(), uri);
         String reqBody = "";
-        String respBody = "";
+        String respBody;
         Map<String, String> headers = new HashMap<>();
         if (ArrayUtil.isNotEmpty(args)) {
             reqBody = generateRequest(method, args, headers);
@@ -69,10 +68,8 @@ public class ServiceProxy implements InvocationHandler {
             return null;
         }
 
-        String body = "";
+        String body = null;
         Map<String, Object> parameters = new HashMap<>();
-        String[] parameterNames = new String[parameterAnnotations.length];
-        int i = 0;
         for (Annotation[] parameterAnnotation : parameterAnnotations) {
             for (int j = 0; j < parameterAnnotation.length; j++) {
                 if (parameterAnnotation[j] instanceof Param) {
@@ -84,7 +81,6 @@ public class ServiceProxy implements InvocationHandler {
                     headers.put(header.name(), args[j] == null ? header.defaultValue() : StrUtil.toString(args[j]));
                 }
                 if (parameterAnnotation[j] instanceof ReqBody) {
-                    Class<?> targetClz = args[j].getClass();
                     body = JSONUtil.toJsonStr(args[j]);
                     return body;
                 }
@@ -93,6 +89,4 @@ public class ServiceProxy implements InvocationHandler {
         body = JSONUtil.toJsonStr(parameters);
         return body;
     }
-
-    public ServiceProxy(ProjectOneProperties properties) {}
 }
