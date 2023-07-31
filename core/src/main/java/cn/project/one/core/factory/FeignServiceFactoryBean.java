@@ -13,7 +13,7 @@ import cn.project.one.core.proxy.ServiceProxy;
  * @since 2023/7/28
  * @param <T> @Target接口类
  */
-public class FeignServiceFactoryBean<T> implements FactoryBean<T> {
+public class FeignServiceFactoryBean implements FactoryBean<Object> {
 
     @Autowired
     ServiceProxy serviceProxy;
@@ -25,8 +25,8 @@ public class FeignServiceFactoryBean<T> implements FactoryBean<T> {
     }
 
     @Override
-    public T getObject() throws Exception {
-        return (T)Proxy.newProxyInstance(feignService.getClassLoader(), new Class[] {feignService}, serviceProxy);
+    public Object getObject() throws Exception {
+        return Proxy.newProxyInstance(feignService.getClassLoader(), new Class[] {feignService}, serviceProxy);
     }
 
     @Override

@@ -70,6 +70,7 @@ public class ProjectOneAutoConfigurationProcessor
             BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(FeignServiceFactoryBean.class);
             builder.addConstructorArgValue(feignService);
             AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();
+            beanDefinition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
             registry.registerBeanDefinition(defaultBeanNameGenerator.generateBeanName(beanDefinition, registry),
                 beanDefinition);
         }
