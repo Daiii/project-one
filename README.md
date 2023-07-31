@@ -32,7 +32,9 @@ project.one.cron=*/10 * * * * *
 
 ```java
 
-@Feign(name = "project-one-test")
+import java.lang.annotation.Target;
+
+@Target(name = "project-one-test")
 public interface IndexService() {
 
     @Mapping('/sayHello')
@@ -40,4 +42,4 @@ public interface IndexService() {
 }
 ```
 
-> 说明：@Feign必须是接口，参数name是被调用的工程名。
+> 说明：@Target必须是接口，参数name是被调用的工程名。

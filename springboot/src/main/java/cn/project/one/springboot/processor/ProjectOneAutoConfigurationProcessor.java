@@ -21,10 +21,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 
-import cn.project.one.api.annotation.Feign;
+import cn.project.one.api.annotation.Target;
 import cn.project.one.common.util.BeanUtil;
 import cn.project.one.common.util.ClassUtil;
-import cn.project.one.core.factory.FeignServiceFactoryBean;
+import cn.project.one.core.factory.TargetServiceFactoryBean;
 import cn.project.one.core.scanner.InterfaceScanner;
 
 public class ProjectOneAutoConfigurationProcessor
@@ -43,7 +43,7 @@ public class ProjectOneAutoConfigurationProcessor
         startClass = ClassUtil.deduceMainApplicationClass();
         scanPackages = getScanPackages();
 
-        registerFeign(beanDefinitionRegistry);
+        registerService(beanDefinitionRegistry);
     }
 
     @Override
@@ -57,17 +57,17 @@ public class ProjectOneAutoConfigurationProcessor
      *
      * @param registry registry
      */
-    private void registerFeign(BeanDefinitionRegistry registry) {
+    private void registerService(BeanDefinitionRegistry registry) {
         DefaultBeanNameGenerator defaultBeanNameGenerator = new DefaultBeanNameGenerator();
         InterfaceScanner scanner = new InterfaceScanner(registry, false, environment, resourceLoader);
-        Set<BeanDefinitionHolder> beanDefHolders = scanner.doScan(Feign.class, scanPackages);
+        Set<BeanDefinitionHolder> beanDefHolders = scanner.doScan(Target.class, scanPackages);
         for (BeanDefinitionHolder beanDefHolder : beanDefHolders) {
             Class<?> feignService = BeanUtil.getClass(beanDefHolder);
             if (!feignService.isInterface()) {
                 throw new RuntimeException("feign service " + feignService.getSimpleName() + " must be interface");
             }
 
-            BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(FeignServiceFactoryBean.class);
+            BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(TargetServiceFactoryBean.class);
             builder.addConstructorArgValue(feignService);
             AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();
             registry.registerBeanDefinition(defaultBeanNameGenerator.generateBeanName(beanDefinition, registry),
