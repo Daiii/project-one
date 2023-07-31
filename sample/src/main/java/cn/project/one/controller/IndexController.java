@@ -1,7 +1,6 @@
 package cn.project.one.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,8 +21,8 @@ public class IndexController {
 
     @RequestMapping(value = "/sayHello")
     @ResponseBody
-    public String sayHello(@RequestHeader(name = "name", defaultValue = "zhangbo") String name) {
-        return indexService.sayHello(name);
+    public String sayHello() {
+        return indexService.sayHello();
     }
 
     @RequestMapping(value = "/say")
