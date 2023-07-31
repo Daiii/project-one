@@ -31,6 +31,8 @@ project.one.cron=*/10 * * * * *
 ### 编写调用对象
 
 ```java
+import cn.project.one.api.annotation.Feign;
+
 @Feign(service = "project-one-test")
 public interface IndexService() {
 
