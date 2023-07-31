@@ -18,20 +18,20 @@ public class FeignServiceFactoryBean implements FactoryBean<Object> {
     @Autowired
     ServiceProxy serviceProxy;
 
-    private final Class<?> feignService;
+    private final Class<?> target;
 
-    public FeignServiceFactoryBean(Class<?> feignService) {
-        this.feignService = feignService;
+    public FeignServiceFactoryBean(Class<?> target) {
+        this.target = target;
     }
 
     @Override
     public Object getObject() throws Exception {
-        return Proxy.newProxyInstance(feignService.getClassLoader(), new Class[] {feignService}, serviceProxy);
+        return Proxy.newProxyInstance(target.getClassLoader(), new Class[] {target}, serviceProxy);
     }
 
     @Override
     public Class<?> getObjectType() {
-        return feignService;
+        return target;
     }
 
     @Override
