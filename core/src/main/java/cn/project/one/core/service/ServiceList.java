@@ -7,17 +7,36 @@ import java.util.Map;
 import cn.hutool.core.map.MapUtil;
 import cn.project.one.common.instance.Instance;
 
-public class Instances {
+/**
+ * 本地服务节点
+ *
+ * @since 2023/7/28
+ */
+public class ServiceList {
 
     public static Map<String, Instance> INSTANCES = new HashMap<>();
 
     public static Map<String, List<Instance>> GROUP = new HashMap<>();
 
-    private Instances() {
+    private ServiceList() {
 
     }
 
-    public static Instance get(String name) {
+    public static class Holder {
+        static final ServiceList INSTANCE = new ServiceList();
+    }
+
+    public static ServiceList getInstance() {
+        return Holder.INSTANCE;
+    }
+
+    /**
+     * 根据服务名获取服务
+     * 
+     * @param name 服务名
+     * @return Instance
+     */
+    public Instance get(String name) {
         if (MapUtil.isEmpty(GROUP)) {
             return null;
         }
@@ -31,7 +50,13 @@ public class Instances {
         return null;
     }
 
-    public static List<Instance> getGroup(String name) {
+    /**
+     * 根据服务名获取所有对应服务
+     * 
+     * @param name 服务名
+     * @return Instance
+     */
+    public List<Instance> getGroup(String name) {
         return GROUP.get(name);
     }
 }

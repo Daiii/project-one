@@ -10,9 +10,14 @@ import cn.hutool.http.HttpUtil;
 import cn.hutool.http.Method;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import cn.project.one.api.common.ConsulRegisterParam;
+import cn.project.one.api.common.RegisterParam;
 import cn.project.one.common.instance.Instance;
 
+/**
+ * consul操作类
+ * 
+ * @since 2023/7/28
+ */
 public class ConsulClient {
 
     private static final String REGISTER = "/v1/agent/service/register";
@@ -29,7 +34,14 @@ public class ConsulClient {
 
     private static final int SUCCESS = 200;
 
-    public static void register(String host, int port, ConsulRegisterParam param) {
+    /**
+     * 注册服务
+     * 
+     * @param host 注册中心地址
+     * @param port 注册中心端口
+     * @param param 注册节点信息
+     */
+    public static void register(String host, int port, RegisterParam param) {
         String url = String.format(URL, host, port) + REGISTER;
         try {
             HttpResponse response =
@@ -42,6 +54,13 @@ public class ConsulClient {
         }
     }
 
+    /**
+     * 注销服务
+     * 
+     * @param host 注册中心地址
+     * @param port 注册中心端口
+     * @param id 节点ID
+     */
     public static void deregister(String host, int port, String id) {
         String url = String.format(URL, host, port) + DEREGISTER + id;
         try {
@@ -54,6 +73,13 @@ public class ConsulClient {
         }
     }
 
+    /**
+     * 拉取所有服务
+     * 
+     * @param host 注册中心地址
+     * @param port 注册中心端口
+     * @return Instance
+     */
     public static HashMap<String, Instance> services(String host, int port) {
         String url = String.format(URL, host, port) + SERVICES;
         HashMap<String, Instance> map = new HashMap<>();

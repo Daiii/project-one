@@ -6,31 +6,29 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.core.DefaultParameterNameDiscoverer;
-
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
-import cn.project.one.api.Feign;
-import cn.project.one.api.Header;
-import cn.project.one.api.Mapping;
-import cn.project.one.api.Param;
-import cn.project.one.api.ReqBody;
-import cn.project.one.api.RespBody;
+import cn.project.one.api.annotation.Feign;
+import cn.project.one.api.annotation.Header;
+import cn.project.one.api.annotation.Mapping;
+import cn.project.one.api.annotation.Param;
+import cn.project.one.api.annotation.ReqBody;
+import cn.project.one.api.annotation.RespBody;
 import cn.project.one.common.config.ProjectOneProperties;
 import cn.project.one.common.instance.Instance;
 import cn.project.one.core.loadbalance.RandomBalance;
-import cn.project.one.core.service.Instances;
+import cn.project.one.core.service.ServiceList;
 
 /**
  * 代理执行类
+ * 
+ * @since 2023/7/28
  */
 public class ServiceProxy implements InvocationHandler {
-
-    private DefaultParameterNameDiscoverer discoverer = new DefaultParameterNameDiscoverer();
 
     private static final String URL = "%s:%s%s";
 
@@ -41,7 +39,7 @@ public class ServiceProxy implements InvocationHandler {
         Feign feign = method.getDeclaringClass().getAnnotation(Feign.class);
         Mapping mapping = method.getAnnotation(Mapping.class);
         boolean responseBody = method.isAnnotationPresent(RespBody.class);
-        Instance instance = RandomBalance.get(Instances.getGroup(feign.name()));
+        Instance instance = RandomBalance.get(ServiceList.getInstance().getGroup(feign.name()));
         String uri = String.format(URL, instance.getAddress(), instance.getPort(), mapping.value());
 
         HttpRequest request = HttpUtil.createRequest(mapping.method(), uri);

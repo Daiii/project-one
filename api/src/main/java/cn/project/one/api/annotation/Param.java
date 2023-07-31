@@ -1,4 +1,4 @@
-package cn.project.one.api;
+package cn.project.one.api.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -9,6 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
 @Documented
-public @interface RespBody {
+public @interface Param {
 
+    String name();
 }

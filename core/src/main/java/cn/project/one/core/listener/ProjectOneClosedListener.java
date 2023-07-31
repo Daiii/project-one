@@ -11,6 +11,11 @@ import cn.project.one.common.config.ProjectOneProperties;
 import cn.project.one.common.util.InetUtil;
 import cn.project.one.core.consul.ConsulClient;
 
+/**
+ * 监听关闭容器事件
+ * 
+ * @since 2023/7/28
+ */
 public class ProjectOneClosedListener implements ApplicationListener<ContextClosedEvent>, EnvironmentAware {
 
     private Environment environment;

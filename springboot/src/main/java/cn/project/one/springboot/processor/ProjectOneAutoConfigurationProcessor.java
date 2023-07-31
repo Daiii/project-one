@@ -22,7 +22,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 
-import cn.project.one.api.Feign;
+import cn.project.one.api.annotation.Feign;
 import cn.project.one.common.config.ProjectOneProperties;
 import cn.project.one.common.util.BeanUtil;
 import cn.project.one.common.util.ClassUtil;

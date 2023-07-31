@@ -1,4 +1,4 @@
-package cn.project.one.api;
+package cn.project.one.api.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

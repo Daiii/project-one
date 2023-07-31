@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import cn.project.one.common.config.ProjectOneProperties;
-import cn.project.one.core.executor.ServiceRefreshExecutor;
+import cn.project.one.core.executor.RefreshServiceExecutor;
 import cn.project.one.core.listener.ProjectOneClosedListener;
 import cn.project.one.core.listener.ProjectOneRefreshedListener;
 
@@ -24,7 +24,7 @@ public class ProjectOneAutoConfiguration {
     }
 
     @Bean
-    public ServiceRefreshExecutor refreshService(ProjectOneProperties properties) {
-        return new ServiceRefreshExecutor(properties);
+    public RefreshServiceExecutor refreshService(ProjectOneProperties properties) {
+        return new RefreshServiceExecutor(properties);
     }
 }

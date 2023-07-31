@@ -5,7 +5,10 @@ import javax.annotation.PostConstruct;
 import cn.hutool.cron.CronUtil;
 import cn.project.one.common.config.ProjectOneProperties;
 
-public class ServiceRefreshExecutor {
+/**
+ * 刷新节点任务线程池
+ */
+public class RefreshServiceExecutor {
 
     private final ProjectOneProperties properties;
 
@@ -13,10 +16,10 @@ public class ServiceRefreshExecutor {
     public void autoRefresh() {
         CronUtil.setMatchSecond(true);
         CronUtil.start();
-        CronUtil.schedule(properties.getCorn(), new RefreshTimer(properties));
+        CronUtil.schedule(properties.getCorn(), new RefreshServiceTimer(properties));
     }
 
-    public ServiceRefreshExecutor(ProjectOneProperties properties) {
+    public RefreshServiceExecutor(ProjectOneProperties properties) {
         this.properties = properties;
     }
 }

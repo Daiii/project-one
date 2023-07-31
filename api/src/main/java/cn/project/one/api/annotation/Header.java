@@ -1,4 +1,4 @@
-package cn.project.one.api;
+package cn.project.one.api.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -6,14 +6,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import cn.hutool.http.Method;
-
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
+@Target(ElementType.PARAMETER)
 @Documented
-public @interface Mapping {
+public @interface Header {
 
-    String value();
+    String name();
 
-    Method method() default Method.GET;
+    String defaultValue() default "";
 }

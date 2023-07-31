@@ -14,9 +14,8 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 
 /**
  * 注解扫描类
- * <p>
- * 扫描后从容器中排除
- * </p>
+ * 
+ * @since 2023/7/28
  */
 public class InterfaceScanner extends ClassPathBeanDefinitionScanner {
 

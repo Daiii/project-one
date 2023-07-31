@@ -10,6 +10,7 @@ import cn.project.one.core.proxy.ServiceProxy;
 /**
  * 代理对象
  * 
+ * @since 2023/7/28
  * @param <T> @Feign接口类
  */
 public class FeignServiceFactoryBean<T> implements FactoryBean<T> {

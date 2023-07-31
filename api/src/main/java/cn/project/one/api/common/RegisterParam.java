@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ConsulRegisterParam {
+public class RegisterParam {
 
     private String ID;
 
@@ -13,5 +13,5 @@ public class ConsulRegisterParam {
 
     private String Address;
 
-    private int Port = 8500;
+    private int Port = 8080;
 }

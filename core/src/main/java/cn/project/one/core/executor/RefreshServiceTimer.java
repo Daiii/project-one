@@ -9,9 +9,14 @@ import cn.project.one.common.config.ConsulProperties;
 import cn.project.one.common.config.ProjectOneProperties;
 import cn.project.one.common.instance.Instance;
 import cn.project.one.core.consul.ConsulClient;
-import cn.project.one.core.service.Instances;
+import cn.project.one.core.service.ServiceList;
 
-public class RefreshTimer implements Runnable {
+/**
+ * 刷新节点任务
+ * 
+ * @since 2023/7/28
+ */
+public class RefreshServiceTimer implements Runnable {
 
     private final ProjectOneProperties properties;
 
@@ -21,17 +26,17 @@ public class RefreshTimer implements Runnable {
     public void run() {
         ConsulProperties consul = properties.getConsul();
         HashMap<String, Instance> services = ConsulClient.services(consul.getAddress(), consul.getPort());
-        Instances.INSTANCES = services;
+        ServiceList.INSTANCES = services;
         Map<String, List<Instance>> map = new HashMap<>();
         Iterable<Map.Entry<String, Instance>> entries = services.entrySet();
         for (final Map.Entry<String, Instance> pair : entries) {
             final List<Instance> values = map.computeIfAbsent(pair.getValue().getService(), k -> new ArrayList<>());
             values.add(pair.getValue());
         }
-        Instances.GROUP = map;
+        ServiceList.GROUP = map;
     }
 
-    public RefreshTimer(ProjectOneProperties properties) {
+    public RefreshServiceTimer(ProjectOneProperties properties) {
         this.properties = properties;
     }
 }
