@@ -34,7 +34,7 @@ project.one.cron=*/10 * * * * *
 
 import java.lang.annotation.Target;
 
-@Target(name = "project-one-test")
+@Feign(name = "project-one-test")
 public interface IndexService() {
 
     @Mapping('/sayHello')

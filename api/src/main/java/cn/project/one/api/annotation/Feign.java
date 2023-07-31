@@ -8,7 +8,7 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 @java.lang.annotation.Target(ElementType.TYPE)
 @Documented
-public @interface Target {
+public @interface Feign {
 
     String name();
 }

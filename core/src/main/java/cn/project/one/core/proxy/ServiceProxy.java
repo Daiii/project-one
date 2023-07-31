@@ -12,7 +12,7 @@ import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
-import cn.project.one.api.annotation.Target;
+import cn.project.one.api.annotation.Feign;
 import cn.project.one.api.annotation.Header;
 import cn.project.one.api.annotation.Mapping;
 import cn.project.one.api.annotation.Param;
@@ -35,7 +35,7 @@ public class ServiceProxy implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        Target target = method.getDeclaringClass().getAnnotation(Target.class);
+        Feign target = method.getDeclaringClass().getAnnotation(Feign.class);
         Mapping mapping = method.getAnnotation(Mapping.class);
         boolean responseBody = method.isAnnotationPresent(RespBody.class);
         Instance instance = RandomBalance.getInstance().get(ServiceList.getInstance().getGroup(target.name()));
