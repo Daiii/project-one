@@ -13,7 +13,6 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.beans.factory.support.DefaultBeanNameGenerator;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.annotation.ComponentScan;
@@ -23,7 +22,6 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 
 import cn.project.one.api.annotation.Feign;
-import cn.project.one.common.config.ProjectOneProperties;
 import cn.project.one.common.util.BeanUtil;
 import cn.project.one.common.util.ClassUtil;
 import cn.project.one.core.factory.FeignServiceFactoryBean;
@@ -42,9 +40,6 @@ public class ProjectOneAutoConfigurationProcessor
 
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry beanDefinitionRegistry) throws BeansException {
-        ProjectOneProperties properties =
-            Binder.get(environment).bind(ProjectOneProperties.PREFIX, ProjectOneProperties.class).get();
-
         startClass = ClassUtil.deduceMainApplicationClass();
         scanPackages = getScanPackages();
 
@@ -63,9 +58,6 @@ public class ProjectOneAutoConfigurationProcessor
      * @param registry registry
      */
     private void registerFeign(BeanDefinitionRegistry registry) {
-        ProjectOneProperties properties =
-            Binder.get(environment).bind(ProjectOneProperties.PREFIX, ProjectOneProperties.class).get();
-
         DefaultBeanNameGenerator defaultBeanNameGenerator = new DefaultBeanNameGenerator();
         InterfaceScanner scanner = new InterfaceScanner(registry, false, environment, resourceLoader);
         Set<BeanDefinitionHolder> beanDefHolders = scanner.doScan(Feign.class, scanPackages);
