@@ -12,6 +12,13 @@ import cn.project.one.common.instance.Instance;
  */
 public class RandomBalance extends AbstractBalance {
 
+    @Override
+    public Instance get(List<Instance> groupService) {
+        Random random = new Random();
+        int index = random.nextInt(groupService.size());
+        return groupService.get(index);
+    }
+
     private RandomBalance() {
 
     }
@@ -22,12 +29,5 @@ public class RandomBalance extends AbstractBalance {
 
     public static RandomBalance getInstance() {
         return Holder.INSTANCE;
-    }
-
-    @Override
-    public Instance get(List<Instance> groupService) {
-        Random random = new Random();
-        int index = random.nextInt(groupService.size());
-        return groupService.get(index);
     }
 }

@@ -18,18 +18,6 @@ public class ServiceList {
 
     public static Map<String, List<Instance>> GROUP = new HashMap<>();
 
-    private ServiceList() {
-
-    }
-
-    public static class Holder {
-        static final ServiceList INSTANCE = new ServiceList();
-    }
-
-    public static ServiceList getInstance() {
-        return Holder.INSTANCE;
-    }
-
     /**
      * 根据服务名获取服务
      * 
@@ -58,5 +46,17 @@ public class ServiceList {
      */
     public List<Instance> getGroup(String name) {
         return GROUP.get(name);
+    }
+
+    private ServiceList() {
+
+    }
+
+    public static class Holder {
+        static final ServiceList INSTANCE = new ServiceList();
+    }
+
+    public static ServiceList getInstance() {
+        return Holder.INSTANCE;
     }
 }
