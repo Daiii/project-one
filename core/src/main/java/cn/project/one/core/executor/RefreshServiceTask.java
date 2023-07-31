@@ -6,9 +6,9 @@ import cn.hutool.cron.CronUtil;
 import cn.project.one.common.config.ProjectOneProperties;
 
 /**
- * 刷新节点任务线程池
+ * 刷新节点任务任务
  */
-public class RefreshServiceExecutor {
+public class RefreshServiceTask {
 
     private final ProjectOneProperties properties;
 
@@ -19,7 +19,7 @@ public class RefreshServiceExecutor {
         CronUtil.schedule(properties.getCorn(), new RefreshServiceTimer(properties));
     }
 
-    public RefreshServiceExecutor(ProjectOneProperties properties) {
+    public RefreshServiceTask(ProjectOneProperties properties) {
         this.properties = properties;
     }
 }
