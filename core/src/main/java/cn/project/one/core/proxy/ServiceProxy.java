@@ -39,7 +39,7 @@ public class ServiceProxy implements InvocationHandler {
         Feign feign = method.getDeclaringClass().getAnnotation(Feign.class);
         Mapping mapping = method.getAnnotation(Mapping.class);
         boolean responseBody = method.isAnnotationPresent(RespBody.class);
-        Instance instance = RandomBalance.get(ServiceList.getInstance().getGroup(feign.name()));
+        Instance instance = RandomBalance.getInstance().get(ServiceList.getInstance().getGroup(feign.name()));
         String uri = String.format(URL, instance.getAddress(), instance.getPort(), mapping.value());
 
         HttpRequest request = HttpUtil.createRequest(mapping.method(), uri);

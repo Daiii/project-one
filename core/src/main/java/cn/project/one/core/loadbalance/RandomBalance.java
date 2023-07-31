@@ -10,13 +10,22 @@ import cn.project.one.common.instance.Instance;
  * 
  * @since 2023/7/28
  */
-public class RandomBalance {
+public class RandomBalance extends AbstractBalance {
 
     private RandomBalance() {
 
     }
 
-    public static Instance get(List<Instance> groupService) {
+    private static class Holder {
+        static final RandomBalance INSTANCE = new RandomBalance();
+    }
+
+    public static RandomBalance getInstance() {
+        return Holder.INSTANCE;
+    }
+
+    @Override
+    public Instance get(List<Instance> groupService) {
         Random random = new Random();
         int index = random.nextInt(groupService.size());
         return groupService.get(index);
