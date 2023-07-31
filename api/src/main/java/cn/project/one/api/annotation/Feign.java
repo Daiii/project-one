@@ -10,5 +10,5 @@ import java.lang.annotation.RetentionPolicy;
 @Documented
 public @interface Feign {
 
-    String name();
+    String service();
 }
