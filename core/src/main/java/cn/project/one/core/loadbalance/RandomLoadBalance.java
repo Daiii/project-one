@@ -10,7 +10,7 @@ import cn.project.one.common.instance.Instance;
  * 
  * @since 2023/7/28
  */
-public class RandomBalance extends AbstractBalance {
+public class RandomLoadBalance extends AbstractLoadBalance {
 
     @Override
     public Instance get(List<Instance> groupService) {
@@ -19,15 +19,15 @@ public class RandomBalance extends AbstractBalance {
         return groupService.get(index);
     }
 
-    private RandomBalance() {
+    private RandomLoadBalance() {
 
     }
 
     private static class Holder {
-        static final RandomBalance INSTANCE = new RandomBalance();
+        static final RandomLoadBalance INSTANCE = new RandomLoadBalance();
     }
 
-    public static RandomBalance getInstance() {
+    public static RandomLoadBalance getInstance() {
         return Holder.INSTANCE;
     }
 }

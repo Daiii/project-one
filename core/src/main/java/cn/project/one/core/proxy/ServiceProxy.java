@@ -19,7 +19,7 @@ import cn.project.one.api.annotation.Param;
 import cn.project.one.api.annotation.ReqBody;
 import cn.project.one.api.annotation.RespBody;
 import cn.project.one.common.instance.Instance;
-import cn.project.one.core.loadbalance.RandomBalance;
+import cn.project.one.core.loadbalance.RandomLoadBalance;
 import cn.project.one.core.service.ServiceList;
 
 /**
@@ -38,7 +38,7 @@ public class ServiceProxy implements InvocationHandler {
         Feign feign = method.getDeclaringClass().getAnnotation(Feign.class);
         Mapping mapping = method.getAnnotation(Mapping.class);
         boolean responseBody = method.isAnnotationPresent(RespBody.class);
-        Instance instance = RandomBalance.getInstance().get(ServiceList.getInstance().getGroup(feign.service()));
+        Instance instance = RandomLoadBalance.getInstance().get(ServiceList.getInstance().getGroup(feign.service()));
         String uri = String.format(URL, instance.getAddress(), instance.getPort(), mapping.value());
 
         HttpRequest request = HttpUtil.createRequest(mapping.method(), uri);
