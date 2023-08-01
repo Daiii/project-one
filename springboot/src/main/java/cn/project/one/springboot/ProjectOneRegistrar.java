@@ -37,7 +37,7 @@ public class ProjectOneRegistrar implements ImportBeanDefinitionRegistrar, Envir
         // 代理对象
         BeanUtil.registerBeanDefinitionIfNotExists(registry, ServiceProxy.class.getName(), ServiceProxy.class);
 
-        // 节点注册
+        // 节点注册器
         Class<?> nodeRegistrar = NodeRegistrarFactory.getNodeRegistrar(properties.getRegistrar());
         BeanUtil.registerBeanDefinitionIfNotExists(registry, nodeRegistrar.getName(), nodeRegistrar);
     }
