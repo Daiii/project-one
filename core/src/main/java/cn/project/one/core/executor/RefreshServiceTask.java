@@ -13,7 +13,7 @@ public class RefreshServiceTask {
 
     private final ProjectOneProperties properties;
 
-    private AbstractRegistrar nodeRegistrar;
+    private final AbstractRegistrar nodeRegistrar;
 
     @PostConstruct
     public void autoRefresh() {

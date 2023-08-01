@@ -20,22 +20,24 @@ public class RefreshServiceTimer implements Runnable {
 
     private final ProjectOneProperties properties;
 
-    private AbstractRegistrar nodeRegistrar;
+    private final AbstractRegistrar nodeRegistrar;
 
     private static final Object LOCK = new Object();
 
     @Override
     public void run() {
-        ConsulProperties consul = properties.getConsul();
-        HashMap<String, Instance> services = nodeRegistrar.services();
-        ServiceList.INSTANCES = services;
-        Map<String, List<Instance>> map = new HashMap<>();
-        Iterable<Map.Entry<String, Instance>> entries = services.entrySet();
-        for (final Map.Entry<String, Instance> pair : entries) {
-            final List<Instance> values = map.computeIfAbsent(pair.getValue().getService(), k -> new ArrayList<>());
-            values.add(pair.getValue());
+        synchronized (LOCK) {
+            ConsulProperties consul = properties.getConsul();
+            HashMap<String, Instance> services = nodeRegistrar.services();
+            ServiceList.INSTANCES = services;
+            Map<String, List<Instance>> map = new HashMap<>();
+            Iterable<Map.Entry<String, Instance>> entries = services.entrySet();
+            for (final Map.Entry<String, Instance> pair : entries) {
+                final List<Instance> values = map.computeIfAbsent(pair.getValue().getService(), k -> new ArrayList<>());
+                values.add(pair.getValue());
+            }
+            ServiceList.GROUP = map;
         }
-        ServiceList.GROUP = map;
     }
 
     public RefreshServiceTimer(ProjectOneProperties properties, AbstractRegistrar nodeRegistrar) {
