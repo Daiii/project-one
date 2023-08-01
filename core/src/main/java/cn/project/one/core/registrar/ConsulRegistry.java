@@ -18,7 +18,7 @@ import cn.project.one.common.config.ConsulProperties;
 import cn.project.one.common.config.ProjectOneProperties;
 import cn.project.one.common.instance.Instance;
 
-public class ConsulRegistrar extends AbstractRegistrar {
+public class ConsulRegistry extends AbstractRegistry {
 
     private static final String REGISTER = "/v1/agent/service/register";
 
@@ -76,7 +76,7 @@ public class ConsulRegistrar extends AbstractRegistrar {
         return map;
     }
 
-    public ConsulRegistrar(Environment environment) {
+    public ConsulRegistry(Environment environment) {
         properties = Binder.get(environment).bind(ProjectOneProperties.PREFIX, ProjectOneProperties.class).get();
         consulProperties = properties.getConsul();
     }

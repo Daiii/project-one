@@ -11,7 +11,7 @@ import cn.project.one.common.Node;
 import cn.project.one.common.config.ProjectOneProperties;
 import cn.project.one.common.util.InetUtil;
 import cn.project.one.core.executor.RefreshServiceTimer;
-import cn.project.one.core.registrar.AbstractRegistrar;
+import cn.project.one.core.registrar.AbstractRegistry;
 
 /**
  * 监听容器刷新事件
@@ -23,13 +23,13 @@ public class ProjectOneRefreshedListener implements ApplicationListener<ContextR
     private Environment environment;
 
     @Autowired
-    AbstractRegistrar nodeRegistrar;
+    AbstractRegistry nodeRegistry;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         ProjectOneProperties properties = event.getApplicationContext().getBean(ProjectOneProperties.class);
         registerService(properties);
-        new RefreshServiceTimer(properties, nodeRegistrar).run();
+        new RefreshServiceTimer(properties, nodeRegistry).run();
     }
 
     /**
@@ -41,7 +41,7 @@ public class ProjectOneRefreshedListener implements ApplicationListener<ContextR
         int port = Convert.toInt(environment.getProperty("server.port"), 8080);
         String id = InetUtil.getHost();
         Node node = new Node(id, name, address, port);
-        nodeRegistrar.register(node);
+        nodeRegistry.register(node);
     }
 
     @Override

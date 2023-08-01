@@ -8,7 +8,7 @@ import java.util.Map;
 import cn.project.one.common.config.ConsulProperties;
 import cn.project.one.common.config.ProjectOneProperties;
 import cn.project.one.common.instance.Instance;
-import cn.project.one.core.registrar.AbstractRegistrar;
+import cn.project.one.core.registrar.AbstractRegistry;
 import cn.project.one.core.service.ServiceList;
 
 /**
@@ -20,7 +20,7 @@ public class RefreshServiceTimer implements Runnable {
 
     private final ProjectOneProperties properties;
 
-    private final AbstractRegistrar nodeRegistrar;
+    private final AbstractRegistry nodeRegistry;
 
     private static final Object LOCK = new Object();
 
@@ -28,7 +28,7 @@ public class RefreshServiceTimer implements Runnable {
     public void run() {
         synchronized (LOCK) {
             ConsulProperties consul = properties.getConsul();
-            HashMap<String, Instance> services = nodeRegistrar.services();
+            HashMap<String, Instance> services = nodeRegistry.services();
             ServiceList.INSTANCES = services;
             Map<String, List<Instance>> map = new HashMap<>();
             Iterable<Map.Entry<String, Instance>> entries = services.entrySet();
@@ -40,8 +40,8 @@ public class RefreshServiceTimer implements Runnable {
         }
     }
 
-    public RefreshServiceTimer(ProjectOneProperties properties, AbstractRegistrar nodeRegistrar) {
+    public RefreshServiceTimer(ProjectOneProperties properties, AbstractRegistry nodeRegistry) {
         this.properties = properties;
-        this.nodeRegistrar = nodeRegistrar;
+        this.nodeRegistry = nodeRegistry;
     }
 }

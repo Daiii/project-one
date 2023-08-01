@@ -9,7 +9,7 @@ import org.springframework.core.env.Environment;
 
 import cn.project.one.common.config.ProjectOneProperties;
 import cn.project.one.common.util.InetUtil;
-import cn.project.one.core.registrar.AbstractRegistrar;
+import cn.project.one.core.registrar.AbstractRegistry;
 
 /**
  * 监听关闭容器事件
@@ -21,7 +21,7 @@ public class ProjectOneClosedListener implements ApplicationListener<ContextClos
     private Environment environment;
 
     @Autowired
-    AbstractRegistrar nodeRegistrar;
+    AbstractRegistry nodeRegistry;
 
     @Override
     public void onApplicationEvent(ContextClosedEvent event) {
@@ -29,7 +29,7 @@ public class ProjectOneClosedListener implements ApplicationListener<ContextClos
             Binder.get(environment).bind(ProjectOneProperties.PREFIX, ProjectOneProperties.class).get();
 
         String id = InetUtil.getHost();
-        nodeRegistrar.deregister(id);
+        nodeRegistry.deregister(id);
     }
 
     @Override
