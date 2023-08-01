@@ -30,7 +30,7 @@ public class Instance {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    private class Weights {
+    private static class Weights {
         private int Passing;
         private int Warning;
     }
