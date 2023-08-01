@@ -2,7 +2,7 @@ package cn.project.one.common.config;
 
 import static cn.project.one.common.config.ProjectOneProperties.PREFIX;
 
-import cn.project.one.common.Registry;
+import cn.project.one.common.constants.Registry;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import lombok.AllArgsConstructor;

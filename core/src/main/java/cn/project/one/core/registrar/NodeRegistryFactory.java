@@ -1,6 +1,6 @@
 package cn.project.one.core.registrar;
 
-import cn.project.one.common.Registry;
+import cn.project.one.common.constants.Registry;
 
 public class NodeRegistryFactory {
 

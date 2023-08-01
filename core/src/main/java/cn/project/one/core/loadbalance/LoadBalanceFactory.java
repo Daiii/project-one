@@ -1,6 +1,6 @@
 package cn.project.one.core.loadbalance;
 
-import cn.project.one.common.LoadBalance;
+import cn.project.one.common.constants.LoadBalance;
 
 public class LoadBalanceFactory {
 
