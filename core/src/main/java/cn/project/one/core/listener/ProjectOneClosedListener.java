@@ -1,15 +1,15 @@
 package cn.project.one.core.listener;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.core.env.Environment;
 
-import cn.project.one.common.config.ConsulProperties;
 import cn.project.one.common.config.ProjectOneProperties;
 import cn.project.one.common.util.InetUtil;
-import cn.project.one.core.consul.ConsulClient;
+import cn.project.one.core.registrar.AbstractRegistrar;
 
 /**
  * 监听关闭容器事件
@@ -20,14 +20,16 @@ public class ProjectOneClosedListener implements ApplicationListener<ContextClos
 
     private Environment environment;
 
+    @Autowired
+    AbstractRegistrar nodeRegistrar;
+
     @Override
     public void onApplicationEvent(ContextClosedEvent event) {
         ProjectOneProperties properties =
             Binder.get(environment).bind(ProjectOneProperties.PREFIX, ProjectOneProperties.class).get();
 
         String id = InetUtil.getHost();
-        ConsulProperties consul = properties.getConsul();
-        ConsulClient.deregister(consul.getAddress(), consul.getPort(), id);
+        nodeRegistrar.deregister(id);
     }
 
     @Override

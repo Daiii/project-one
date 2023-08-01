@@ -1,11 +1,11 @@
-package cn.project.one.api.common;
+package cn.project.one.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class RegisterParam {
+public class Node {
 
     private String ID;
 

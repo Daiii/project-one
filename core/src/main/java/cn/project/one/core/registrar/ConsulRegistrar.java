@@ -1,7 +1,10 @@
-package cn.project.one.core.consul;
+package cn.project.one.core.registrar;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.springframework.boot.context.properties.bind.Binder;
+import org.springframework.core.env.Environment;
 
 import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.StrUtil;
@@ -10,15 +13,12 @@ import cn.hutool.http.HttpUtil;
 import cn.hutool.http.Method;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import cn.project.one.api.common.RegisterParam;
+import cn.project.one.common.Node;
+import cn.project.one.common.config.ConsulProperties;
+import cn.project.one.common.config.ProjectOneProperties;
 import cn.project.one.common.instance.Instance;
 
-/**
- * consul操作类
- * 
- * @since 2023/7/28
- */
-public class ConsulClient {
+public class ConsulRegistrar extends AbstractRegistrar {
 
     private static final String REGISTER = "/v1/agent/service/register";
 
@@ -34,35 +34,22 @@ public class ConsulClient {
 
     private static final int SUCCESS = 200;
 
-    /**
-     * 注册服务
-     * 
-     * @param host 注册中心地址
-     * @param port 注册中心端口
-     * @param param 注册节点信息
-     */
-    public static void register(String host, int port, RegisterParam param) {
-        String url = String.format(URL, host, port) + REGISTER;
-        try {
-            HttpResponse response =
-                HttpUtil.createRequest(Method.PUT, url).body(JSONUtil.toJsonStr(param)).executeAsync();
-            if (response.getStatus() != SUCCESS) {
-                Console.log(String.format("url : %s register error param : %s", url, param));
-            }
-        } catch (Exception e) {
-            Console.log(e);
+    ProjectOneProperties properties;
+
+    ConsulProperties consulProperties;
+
+    @Override
+    public void register(Node node) {
+        String url = String.format(URL, consulProperties.getAddress(), consulProperties.getPort()) + REGISTER;
+        HttpResponse response = HttpUtil.createRequest(Method.PUT, url).body(JSONUtil.toJsonStr(node)).executeAsync();
+        if (response.getStatus() != SUCCESS) {
+            Console.log(String.format("url : %s register error param : %s", url, node));
         }
     }
 
-    /**
-     * 注销服务
-     * 
-     * @param host 注册中心地址
-     * @param port 注册中心端口
-     * @param id 节点ID
-     */
-    public static void deregister(String host, int port, String id) {
-        String url = String.format(URL, host, port) + DEREGISTER + id;
+    @Override
+    public void deregister(String id) {
+        String url = String.format(URL, consulProperties.getAddress(), consulProperties.getPort()) + DEREGISTER + id;
         try {
             HttpResponse response = HttpUtil.createRequest(Method.PUT, url).executeAsync();
             if (response.getStatus() != SUCCESS) {
@@ -73,15 +60,9 @@ public class ConsulClient {
         }
     }
 
-    /**
-     * 拉取所有服务
-     * 
-     * @param host 注册中心地址
-     * @param port 注册中心端口
-     * @return Instance
-     */
-    public static HashMap<String, Instance> services(String host, int port) {
-        String url = String.format(URL, host, port) + SERVICES;
+    @Override
+    public HashMap<String, Instance> services() {
+        String url = String.format(URL, consulProperties.getAddress(), consulProperties.getPort()) + SERVICES;
         HashMap<String, Instance> map = new HashMap<>();
         HttpResponse response = HttpUtil.createRequest(Method.GET, url).executeAsync();
         if (response.getStatus() == 200) {
@@ -95,7 +76,8 @@ public class ConsulClient {
         return map;
     }
 
-    private ConsulClient() {
-
+    public ConsulRegistrar(Environment environment) {
+        properties = Binder.get(environment).bind(ProjectOneProperties.PREFIX, ProjectOneProperties.class).get();
+        consulProperties = properties.getConsul();
     }
 }

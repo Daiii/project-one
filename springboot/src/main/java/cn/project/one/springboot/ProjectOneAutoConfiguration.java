@@ -8,6 +8,7 @@ import cn.project.one.common.config.ProjectOneProperties;
 import cn.project.one.core.executor.RefreshServiceTask;
 import cn.project.one.core.listener.ProjectOneClosedListener;
 import cn.project.one.core.listener.ProjectOneRefreshedListener;
+import cn.project.one.core.registrar.AbstractRegistrar;
 
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(value = {ProjectOneProperties.class})
@@ -24,7 +25,7 @@ public class ProjectOneAutoConfiguration {
     }
 
     @Bean
-    public RefreshServiceTask refreshService(ProjectOneProperties properties) {
-        return new RefreshServiceTask(properties);
+    public RefreshServiceTask refreshService(ProjectOneProperties properties, AbstractRegistrar nodeRegistrar) {
+        return new RefreshServiceTask(properties, nodeRegistrar);
     }
 }
