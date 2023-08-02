@@ -3,7 +3,10 @@ package cn.project.one.core.registrar;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.boot.context.properties.bind.Binder;
+import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 
 import cn.hutool.core.lang.Console;
@@ -18,7 +21,7 @@ import cn.project.one.common.config.ConsulProperties;
 import cn.project.one.common.config.ProjectOneProperties;
 import cn.project.one.common.instance.Instance;
 
-public class ConsulRegistry extends AbstractRegistry {
+public class ConsulRegistry extends AbstractRegistry implements EnvironmentAware {
 
     private static final String REGISTER = "/v1/agent/service/register";
 
@@ -37,6 +40,8 @@ public class ConsulRegistry extends AbstractRegistry {
     ProjectOneProperties properties;
 
     ConsulProperties consulProperties;
+
+    Environment environment;
 
     @Override
     public void register(Node node) {
@@ -76,8 +81,14 @@ public class ConsulRegistry extends AbstractRegistry {
         return map;
     }
 
-    public ConsulRegistry(Environment environment) {
+    @PostConstruct
+    public void init() {
         properties = Binder.get(environment).bind(ProjectOneProperties.PREFIX, ProjectOneProperties.class).get();
         consulProperties = properties.getConsul();
+    }
+
+    @Override
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
     }
 }
