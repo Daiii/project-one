@@ -29,7 +29,9 @@ public class ProjectOneRefreshedListener implements ApplicationListener<ContextR
     public void onApplicationEvent(ContextRefreshedEvent event) {
         ProjectOneProperties properties = event.getApplicationContext().getBean(ProjectOneProperties.class);
         registerService(properties);
-        new RefreshServiceTimer(properties, nodeRegistry).run();
+        new Thread(() -> {
+            new RefreshServiceTimer(properties, nodeRegistry).run();
+        });
     }
 
     /**
