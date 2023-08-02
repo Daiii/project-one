@@ -55,13 +55,9 @@ public class ConsulRegistry extends AbstractRegistry implements EnvironmentAware
     @Override
     public void deregister(String id) {
         String url = String.format(URL, consulProperties.getAddress(), consulProperties.getPort()) + DEREGISTER + id;
-        try {
-            HttpResponse response = HttpUtil.createRequest(Method.PUT, url).executeAsync();
-            if (response.getStatus() != SUCCESS) {
-                Console.log(String.format("url : %s deregister error ", url));
-            }
-        } catch (Exception e) {
-            Console.log(e);
+        HttpResponse response = HttpUtil.createRequest(Method.PUT, url).executeAsync();
+        if (response.getStatus() != SUCCESS) {
+            Console.log(String.format("url : %s deregister error ", url));
         }
     }
 
