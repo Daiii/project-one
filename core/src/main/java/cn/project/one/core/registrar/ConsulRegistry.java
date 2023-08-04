@@ -31,7 +31,7 @@ public class ConsulRegistry extends AbstractRegistry implements EnvironmentAware
 
     private static final String CHECKS = "/v1/agent/checks";
 
-    private static final String CHECK_DEREGISTER = "/agent/check/deregister/";
+    private static final String CHECK_DEREGISTER = "/v1/agent/check/deregister/";
 
     private static final String URL = "%s:%s";
 
