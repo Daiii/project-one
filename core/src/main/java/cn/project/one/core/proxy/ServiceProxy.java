@@ -8,6 +8,7 @@ import java.util.Map;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.HttpException;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
@@ -34,7 +35,7 @@ public class ServiceProxy implements InvocationHandler {
     private static final int SUCCESS = 200;
 
     @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    public Object invoke(Object proxy, Method method, Object[] args) {
         Feign feign = method.getDeclaringClass().getAnnotation(Feign.class);
         Mapping mapping = method.getAnnotation(Mapping.class);
         boolean responseBody = method.isAnnotationPresent(RespBody.class);
@@ -50,7 +51,8 @@ public class ServiceProxy implements InvocationHandler {
         }
         HttpResponse response = request.body(reqBody).addHeaders(headers).executeAsync();
         if (response.getStatus() != SUCCESS) {
-            throw new Exception(String.format("call %s exception request = %s, response = %s", uri, request, response));
+            throw new HttpException(
+                String.format("call %s exception request = %s, response = %s", uri, request, response));
         }
 
         if (responseBody) {
@@ -68,7 +70,7 @@ public class ServiceProxy implements InvocationHandler {
             return null;
         }
 
-        String body = null;
+        String body;
         Map<String, Object> parameters = new HashMap<>();
         for (Annotation[] parameterAnnotation : parameterAnnotations) {
             for (int j = 0; j < parameterAnnotation.length; j++) {

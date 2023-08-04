@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotationMetadata;
 
+import cn.hutool.core.util.ObjUtil;
 import cn.project.one.common.config.ProjectOneProperties;
 import cn.project.one.common.util.BeanUtil;
 import cn.project.one.core.proxy.ServiceProxy;
@@ -39,6 +40,9 @@ public class ProjectOneRegistrar implements ImportBeanDefinitionRegistrar, Envir
 
         // 节点注册器
         Class<?> nodeRegistry = NodeRegistryFactory.getNodeRegistry(properties.getRegistry());
+        if (ObjUtil.isNull(nodeRegistry)) {
+            throw new RuntimeException("node service registry type must be enum.");
+        }
         BeanUtil.registerBeanDefinitionIfNotExists(registry, nodeRegistry.getName(), nodeRegistry);
     }
 
