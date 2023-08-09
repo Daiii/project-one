@@ -6,5 +6,10 @@ import java.util.List;
 
 public interface LoadBalance {
 
+    /**
+     * 获取所有服务列表
+     * 
+     * @return List
+     */
     List<Instance> getAll();
 }
