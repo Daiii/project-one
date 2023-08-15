@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.project.one.common.config.ConsulProperties;
-import cn.project.one.common.config.ProjectOneProperties;
 import cn.project.one.common.instance.Instance;
 import cn.project.one.core.registrar.AbstractRegistry;
 import cn.project.one.core.service.ServiceList;
@@ -17,9 +15,6 @@ import cn.project.one.core.service.ServiceList;
  * @since 2023/7/28
  */
 public class RefreshServiceTimer implements Runnable {
-
-    private final ProjectOneProperties properties;
-
     private final AbstractRegistry nodeRegistry;
 
     private static final Object LOCK = new Object();
@@ -27,7 +22,6 @@ public class RefreshServiceTimer implements Runnable {
     @Override
     public void run() {
         synchronized (LOCK) {
-            ConsulProperties consul = properties.getConsul();
             HashMap<String, Instance> services = nodeRegistry.services();
             ServiceList.INSTANCES = services;
             Map<String, List<Instance>> map = new HashMap<>();
@@ -40,8 +34,7 @@ public class RefreshServiceTimer implements Runnable {
         }
     }
 
-    public RefreshServiceTimer(ProjectOneProperties properties, AbstractRegistry nodeRegistry) {
-        this.properties = properties;
+    public RefreshServiceTimer(AbstractRegistry nodeRegistry) {
         this.nodeRegistry = nodeRegistry;
     }
 }
