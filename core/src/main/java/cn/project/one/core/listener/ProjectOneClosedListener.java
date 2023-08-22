@@ -22,6 +22,9 @@ public class ProjectOneClosedListener implements ApplicationListener<ContextClos
         deregisterNode();
     }
 
+    /**
+     * 撤销服务
+     */
     private void deregisterNode() {
         String id = InetUtil.getHost();
         nodeRegistry.deregister(id);

@@ -8,7 +8,6 @@ import org.springframework.core.env.Environment;
 
 import cn.hutool.core.convert.Convert;
 import cn.project.one.common.Node;
-import cn.project.one.common.config.ProjectOneProperties;
 import cn.project.one.common.util.InetUtil;
 import cn.project.one.core.executor.RefreshServiceTimer;
 import cn.project.one.core.registrar.AbstractRegistry;
@@ -27,15 +26,14 @@ public class ProjectOneRefreshedListener implements ApplicationListener<ContextR
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        ProjectOneProperties properties = event.getApplicationContext().getBean(ProjectOneProperties.class);
-        registerNode(properties);
+        registerNode();
         new Thread(() -> new RefreshServiceTimer(nodeRegistry).run());
     }
 
     /**
      * 注册服务
      */
-    private void registerNode(ProjectOneProperties properties) {
+    private void registerNode() {
         String name = environment.getProperty("spring.application.name");
         String address = InetUtil.getHost();
         int port = Convert.toInt(environment.getProperty("server.port"), 8080);
