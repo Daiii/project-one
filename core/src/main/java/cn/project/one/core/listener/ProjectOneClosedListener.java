@@ -19,6 +19,10 @@ public class ProjectOneClosedListener implements ApplicationListener<ContextClos
 
     @Override
     public void onApplicationEvent(ContextClosedEvent event) {
+        deregisterNode();
+    }
+
+    private void deregisterNode() {
         String id = InetUtil.getHost();
         nodeRegistry.deregister(id);
     }
