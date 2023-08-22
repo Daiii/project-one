@@ -28,14 +28,14 @@ public class ProjectOneRefreshedListener implements ApplicationListener<ContextR
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         ProjectOneProperties properties = event.getApplicationContext().getBean(ProjectOneProperties.class);
-        registerService(properties);
+        registerNode(properties);
         new Thread(() -> new RefreshServiceTimer(nodeRegistry).run());
     }
 
     /**
      * 注册服务
      */
-    private void registerService(ProjectOneProperties properties) {
+    private void registerNode(ProjectOneProperties properties) {
         String name = environment.getProperty("spring.application.name");
         String address = InetUtil.getHost();
         int port = Convert.toInt(environment.getProperty("server.port"), 8080);
