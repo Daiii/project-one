@@ -1,0 +1,14 @@
+${AnsiColor.BRIGHT_YELLOW}${AnsiStyle.BOLD}
+                 _           _                          
+                (_)         | |                         
+ _ __  _ __ ___  _  ___  ___| |_ ______ ___  _ __   ___ 
+| '_ \| '__/ _ \| |/ _ \/ __| __|______/ _ \| '_ \ / _ \
+| |_) | | | (_) | |  __/ (__| |_      | (_) | | | |  __/
+| .__/|_|  \___/| |\___|\___|\__|      \___/|_| |_|\___|
+| |            _/ |                                     
+|_|           |__/                                      
+
+${AnsiColor.CYAN}${AnsiStyle.BOLD}
+::  Java                 ::  (v${java.version})
+::  Spring Boot          ::  (v${spring-boot.version})
+${AnsiStyle.NORMAL}
