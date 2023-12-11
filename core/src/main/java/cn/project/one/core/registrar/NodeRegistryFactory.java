@@ -7,6 +7,8 @@ public class NodeRegistryFactory {
     public static Class<?> getNodeRegistry(Registry registry) {
         if (registry.equals(Registry.Consul)) {
             return ConsulRegistry.class;
+        } else if (registry.equals(Registry.Nacos)) {
+            return NacosRegistry.class;
         }
         return null;
     }

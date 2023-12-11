@@ -66,7 +66,7 @@ public class ConsulRegistry extends AbstractRegistry implements EnvironmentAware
         String url = String.format(URL, consulProperties.getAddress(), consulProperties.getPort()) + SERVICES;
         HashMap<String, Instance> map = new HashMap<>();
         HttpResponse response = HttpUtil.createRequest(Method.GET, url).executeAsync();
-        if (response.getStatus() == 200) {
+        if (response.getStatus() == SUCCESS) {
             String responseBody = response.body();
             JSONObject entries = JSONUtil.parseObj(responseBody);
             for (Map.Entry<String, Object> entry : entries) {
