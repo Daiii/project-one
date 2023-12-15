@@ -2,7 +2,7 @@
 
 ## 概要信息
 
-* 兼容Spring Boot，服务注册(consul)，RPC调用(http)。
+* 兼容Spring Boot，服务注册(consul、nacos)，RPC调用(http)。
 * 序列化方式：JSON
 
 ## 指南
