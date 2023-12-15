@@ -27,4 +27,11 @@ public abstract class AbstractRegistry implements NodeRegistry {
      * @return HashMap
      */
     public abstract HashMap<String, Instance> services();
+
+    /**
+     * 心跳
+     * 
+     * @param node 节点信息
+     */
+    public abstract void beat(Node node);
 }

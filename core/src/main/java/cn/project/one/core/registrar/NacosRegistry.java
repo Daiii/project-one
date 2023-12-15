@@ -25,6 +25,8 @@ public class NacosRegistry extends AbstractRegistry implements EnvironmentAware 
 
     private static final String LIST = "/nacos/v1/ns/instance/list";
 
+    private static final String BEAT = "/nacos/v1/ns/instance/beat";
+
     private static final String URL = "%s:%s";
 
     private static final int SUCCESS = 200;
@@ -45,7 +47,7 @@ public class NacosRegistry extends AbstractRegistry implements EnvironmentAware 
         formData.put("ephemeral", "false");
         HttpResponse response = HttpUtil.createPost(url).formStr(formData).executeAsync();
         if (response.getStatus() != SUCCESS) {
-            Console.log(String.format("url : %s register error param : %s", url, node));
+            Console.error(String.format("url : %s register error param : %s", url, node));
         }
     }
 
@@ -59,7 +61,7 @@ public class NacosRegistry extends AbstractRegistry implements EnvironmentAware 
         formData.put("ephemeral", "false");
         HttpResponse response = HttpUtil.createRequest(Method.DELETE, url).formStr(formData).executeAsync();
         if (response.getStatus() != SUCCESS) {
-            Console.log(String.format("url : %s deregister error, form data = %s ", url, formData));
+            Console.error(String.format("url : %s deregister error, form data = %s ", url, formData));
         }
     }
 
@@ -71,6 +73,20 @@ public class NacosRegistry extends AbstractRegistry implements EnvironmentAware 
         String url = String.format(URL, nacosProperties.getAddress(), nacosProperties.getPort()) + LIST;
         HashMap<String, Instance> map = new HashMap<>();
         return map;
+    }
+
+    @Override
+    public void beat(Node node) {
+        String url = String.format(URL, nacosProperties.getAddress(), nacosProperties.getPort()) + BEAT;
+        Map<String, String> formData = new HashMap<>();
+        formData.put("serviceName", node.getName());
+        formData.put("ip", node.getAddress());
+        formData.put("port", String.valueOf(node.getPort()));
+        formData.put("ephemeral", "false");
+        HttpResponse response = HttpUtil.createRequest(Method.PUT, url).formStr(formData).executeAsync();
+        if (response.getStatus() != SUCCESS) {
+            Console.error(String.format("url : %s beat error param : %s", url, node));
+        }
     }
 
     @Override

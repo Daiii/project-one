@@ -48,7 +48,7 @@ public class ConsulRegistry extends AbstractRegistry implements EnvironmentAware
         String url = String.format(URL, consulProperties.getAddress(), consulProperties.getPort()) + REGISTER;
         HttpResponse response = HttpUtil.createRequest(Method.PUT, url).body(JSONUtil.toJsonStr(node)).executeAsync();
         if (response.getStatus() != SUCCESS) {
-            Console.log(String.format("url : %s register error param : %s", url, node));
+            Console.error(String.format("url : %s register error param : %s", url, node));
         }
     }
 
@@ -57,7 +57,7 @@ public class ConsulRegistry extends AbstractRegistry implements EnvironmentAware
         String url = String.format(URL, consulProperties.getAddress(), consulProperties.getPort()) + DEREGISTER + id;
         HttpResponse response = HttpUtil.createRequest(Method.PUT, url).executeAsync();
         if (response.getStatus() != SUCCESS) {
-            Console.log(String.format("url : %s deregister error ", url));
+            Console.error(String.format("url : %s deregister error ", url));
         }
     }
 
@@ -75,6 +75,11 @@ public class ConsulRegistry extends AbstractRegistry implements EnvironmentAware
             }
         }
         return map;
+    }
+
+    @Override
+    public void beat(Node node) {
+        // TODO
     }
 
     @PostConstruct

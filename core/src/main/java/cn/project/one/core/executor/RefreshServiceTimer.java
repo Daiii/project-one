@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.project.one.common.Node;
 import cn.project.one.common.instance.Instance;
+import cn.project.one.common.util.InetUtil;
 import cn.project.one.core.registrar.AbstractRegistry;
 import cn.project.one.core.service.ServiceList;
 
@@ -31,6 +33,9 @@ public class RefreshServiceTimer implements Runnable {
                 values.add(pair.getValue());
             }
             ServiceList.GROUP = map;
+
+            Node node = new Node(InetUtil.getHost(), "project-one-test", InetUtil.getHost(), 8080);
+            nodeRegistry.beat(node);
         }
     }
 
