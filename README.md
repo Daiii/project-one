@@ -22,6 +22,7 @@
 ### 参数配置
 
 ```properties
+project.one.registry=Consul
 project.one.consul.address=127.0.0.1
 project.one.consul.port=8500
 project.one.cron=*/10 * * * * *
