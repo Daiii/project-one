@@ -10,6 +10,7 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 
 import cn.hutool.core.lang.Console;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.http.Method;
@@ -42,7 +43,7 @@ public class NacosRegistry extends AbstractRegistry implements EnvironmentAware 
         Map<String, String> formData = new HashMap<>();
         formData.put("serviceName", node.getName());
         formData.put("ip", node.getAddress());
-        formData.put("port", String.valueOf(node.getPort()));
+        formData.put("port", StrUtil.toString(node.getPort()));
         formData.put("ephemeral", "false");
         HttpResponse response = HttpUtil.createPost(url).formStr(formData).executeAsync();
         if (response.getStatus() != ResultCodeEnum.SUCCESS.getCode()) {
@@ -80,7 +81,7 @@ public class NacosRegistry extends AbstractRegistry implements EnvironmentAware 
         Map<String, String> formData = new HashMap<>();
         formData.put("serviceName", node.getName());
         formData.put("ip", node.getAddress());
-        formData.put("port", String.valueOf(node.getPort()));
+        formData.put("port", StrUtil.toString(node.getPort()));
         formData.put("ephemeral", "false");
         HttpResponse response = HttpUtil.createRequest(Method.PUT, url).formStr(formData).executeAsync();
         if (response.getStatus() != ResultCodeEnum.SUCCESS.getCode()) {
