@@ -1,22 +1,17 @@
 package cn.project.one.common.util;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import cn.hutool.system.HostInfo;
 
 public class InetUtil {
 
+    private static final HostInfo HOST_INFO = new HostInfo();
+
     /**
      * 获取本机IP
-     * 
+     *
      * @return host
      */
     public static String getHost() {
-        String hostName = "127.0.0.1";
-        try {
-            InetAddress address = InetAddress.getLocalHost();
-            return address.getHostName();
-        } catch (UnknownHostException e) {
-            return hostName;
-        }
+        return HOST_INFO.getAddress();
     }
 }
