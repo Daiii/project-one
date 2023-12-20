@@ -16,6 +16,7 @@ import cn.hutool.http.Method;
 import cn.project.one.common.Node;
 import cn.project.one.common.config.NacosProperties;
 import cn.project.one.common.config.ProjectOneProperties;
+import cn.project.one.common.constants.ResultCodeEnum;
 import cn.project.one.common.instance.Instance;
 import cn.project.one.common.util.InetUtil;
 
@@ -28,8 +29,6 @@ public class NacosRegistry extends AbstractRegistry implements EnvironmentAware 
     private static final String BEAT = "/nacos/v1/ns/instance/beat";
 
     private static final String URL = "%s:%s";
-
-    private static final int SUCCESS = 200;
 
     private ProjectOneProperties properties;
 
@@ -46,7 +45,7 @@ public class NacosRegistry extends AbstractRegistry implements EnvironmentAware 
         formData.put("port", String.valueOf(node.getPort()));
         formData.put("ephemeral", "false");
         HttpResponse response = HttpUtil.createPost(url).formStr(formData).executeAsync();
-        if (response.getStatus() != SUCCESS) {
+        if (response.getStatus() != ResultCodeEnum.SUCCESS.getCode()) {
             Console.error(String.format("url : %s register error param : %s", url, node));
         }
     }
@@ -60,7 +59,7 @@ public class NacosRegistry extends AbstractRegistry implements EnvironmentAware 
         formData.put("port", environment.getProperty("server.port"));
         formData.put("ephemeral", "false");
         HttpResponse response = HttpUtil.createRequest(Method.DELETE, url).formStr(formData).executeAsync();
-        if (response.getStatus() != SUCCESS) {
+        if (response.getStatus() != ResultCodeEnum.SUCCESS.getCode()) {
             Console.error(String.format("url : %s deregister error, form data = %s ", url, formData));
         }
     }
@@ -84,7 +83,7 @@ public class NacosRegistry extends AbstractRegistry implements EnvironmentAware 
         formData.put("port", String.valueOf(node.getPort()));
         formData.put("ephemeral", "false");
         HttpResponse response = HttpUtil.createRequest(Method.PUT, url).formStr(formData).executeAsync();
-        if (response.getStatus() != SUCCESS) {
+        if (response.getStatus() != ResultCodeEnum.SUCCESS.getCode()) {
             Console.error(String.format("url : %s beat error param : %s", url, node));
         }
     }
