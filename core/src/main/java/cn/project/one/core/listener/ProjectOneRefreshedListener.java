@@ -7,6 +7,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.env.Environment;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.thread.ThreadUtil;
 import cn.project.one.common.Node;
 import cn.project.one.common.util.InetUtil;
 import cn.project.one.core.executor.RefreshServiceTimer;
@@ -27,7 +28,7 @@ public class ProjectOneRefreshedListener implements ApplicationListener<ContextR
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         registerNode();
-        new Thread(() -> new RefreshServiceTimer(nodeRegistry).run());
+        ThreadUtil.execAsync(new RefreshServiceTimer(nodeRegistry));
     }
 
     /**
