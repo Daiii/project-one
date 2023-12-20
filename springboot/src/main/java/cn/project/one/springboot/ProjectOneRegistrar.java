@@ -40,9 +40,6 @@ public class ProjectOneRegistrar implements ImportBeanDefinitionRegistrar, Envir
 
         // 节点注册器
         Class<?> nodeRegistry = NodeRegistryFactory.getNodeRegistry(properties.getRegistry());
-        if (ObjUtil.isNull(nodeRegistry)) {
-            throw new RuntimeException("node service registry type must be enum.");
-        }
         BeanUtil.registerBeanDefinitionIfNotExists(registry, nodeRegistry.getName(), nodeRegistry);
     }
 

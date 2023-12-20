@@ -10,6 +10,6 @@ public class NodeRegistryFactory {
         } else if (registry.equals(Registry.Nacos)) {
             return NacosRegistry.class;
         }
-        return null;
+        return ConsulRegistry.class;
     }
 }
