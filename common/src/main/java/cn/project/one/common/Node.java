@@ -1,12 +1,11 @@
 package cn.project.one.common;
 
-import cn.hutool.core.lang.Dict;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Node extends Dict {
+public class Node{
 
     private String ID;
 

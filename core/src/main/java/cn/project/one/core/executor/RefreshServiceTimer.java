@@ -33,9 +33,6 @@ public class RefreshServiceTimer implements Runnable {
                 values.add(pair.getValue());
             }
             ServiceList.GROUP = map;
-
-            Node node = new Node(InetUtil.getHost(), "project-one-test", InetUtil.getHost(), 8080);
-            nodeRegistry.beat(node);
         }
     }
 

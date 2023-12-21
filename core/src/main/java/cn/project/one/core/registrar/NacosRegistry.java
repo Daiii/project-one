@@ -9,11 +9,14 @@ import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Console;
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.http.Method;
+import cn.hutool.json.JSONObject;
 import cn.project.one.common.Node;
 import cn.project.one.common.config.NacosProperties;
 import cn.project.one.common.config.ProjectOneProperties;
@@ -83,7 +86,10 @@ public class NacosRegistry extends AbstractRegistry implements EnvironmentAware 
         formData.put("ip", node.getAddress());
         formData.put("port", StrUtil.toString(node.getPort()));
         formData.put("ephemeral", "false");
-        HttpResponse response = HttpUtil.createRequest(Method.PUT, url).formStr(formData).executeAsync();
+        JSONObject beat = new JSONObject();
+        beat.putOpt("timestamp", DateUtil.current());
+        HttpResponse response = HttpUtil.createRequest(Method.PUT, url + "?" + MapUtil.join(formData, "&", "="))
+            .body(beat.toJSONString(0)).executeAsync();
         if (response.getStatus() != ResultCodeEnum.SUCCESS.getCode()) {
             Console.error(String.format("url : %s beat error param : %s", url, node));
         }

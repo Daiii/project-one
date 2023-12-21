@@ -48,6 +48,7 @@ public class ConsulRegistry extends AbstractRegistry implements EnvironmentAware
         HttpResponse response = HttpUtil.createRequest(Method.PUT, url).body(JSONUtil.toJsonStr(node)).executeAsync();
         if (response.getStatus() != ResultCodeEnum.SUCCESS.getCode()) {
             Console.error(String.format("url : %s register error param : %s", url, node));
+            Console.error(response);
         }
     }
 
