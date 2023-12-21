@@ -1,6 +1,7 @@
 package cn.project.one.core.registrar;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -16,7 +17,9 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.http.Method;
+import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import cn.project.one.common.Node;
 import cn.project.one.common.config.NacosProperties;
 import cn.project.one.common.config.ProjectOneProperties;
@@ -28,7 +31,9 @@ public class NacosRegistry extends AbstractRegistry implements EnvironmentAware 
 
     private static final String INSTANCE = "/nacos/v1/ns/instance";
 
-    private static final String LIST = "/nacos/v1/ns/instance/list";
+    private static final String INSTANCE_LIST = "/nacos/v1/ns/instance/list";
+
+    private static final String SERVICE_LIST = "/nacos/v1/ns/service/list";
 
     private static final String BEAT = "/nacos/v1/ns/instance/beat";
 
@@ -70,11 +75,39 @@ public class NacosRegistry extends AbstractRegistry implements EnvironmentAware 
 
     @Override
     public HashMap<String, Instance> services() {
-        // TODO
-        // 先service/list
-        // 再根据返回的名称/instance/list
-        String url = String.format(URL, nacosProperties.getAddress(), nacosProperties.getPort()) + LIST;
         HashMap<String, Instance> map = new HashMap<>();
+        String serviceListUrl =
+            String.format(URL, nacosProperties.getAddress(), nacosProperties.getPort()) + SERVICE_LIST;
+        String instanceListUrl =
+            String.format(URL, nacosProperties.getAddress(), nacosProperties.getPort()) + INSTANCE_LIST;
+        Map<String, String> params = new HashMap<>();
+        params.put("pageNo", "1");
+        params.put("pageSize", "10");
+        HttpResponse listServiceResp = HttpUtil.createRequest(Method.GET, serviceListUrl).formStr(params).execute();
+        if (listServiceResp.getStatus() == ResultCodeEnum.SUCCESS.getCode()) {
+            JSONObject jsonObj = JSONUtil.parseObj(listServiceResp.body());
+            Integer count = jsonObj.getInt("count");
+            List<String> doms = JSONUtil.toList(jsonObj.getJSONArray("doms"), String.class);
+            for (String serviceName : doms) {
+                HttpResponse instanceResp =
+                    HttpUtil.createRequest(Method.GET, instanceListUrl + "?serviceName=" + serviceName).execute();
+                if (instanceResp.getStatus() == ResultCodeEnum.SUCCESS.getCode()) {
+                    JSONObject instance = JSONUtil.parseObj(instanceResp.body());
+                    JSONArray hosts = instance.getJSONArray("hosts");
+                    for (Object item : hosts) {
+                        JSONObject host = JSONUtil.parseObj(item);
+                        String address = host.getStr("ip");
+                        Integer port = host.getInt("port");
+                        Instance info = new Instance();
+                        info.setID(address);
+                        info.setAddress(address);
+                        info.setService(serviceName);
+                        info.setPort(port);
+                        map.put(host.getStr("ip"), info);
+                    }
+                }
+            }
+        }
         return map;
     }
 
