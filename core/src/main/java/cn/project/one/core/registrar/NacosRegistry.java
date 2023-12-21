@@ -83,14 +83,15 @@ public class NacosRegistry extends AbstractRegistry implements EnvironmentAware 
         Map<String, String> params = new HashMap<>();
         params.put("pageNo", "1");
         params.put("pageSize", "10");
-        HttpResponse listServiceResp = HttpUtil.createRequest(Method.GET, serviceListUrl).formStr(params).execute();
+        HttpResponse listServiceResp =
+            HttpUtil.createRequest(Method.GET, serviceListUrl).formStr(params).executeAsync();
         if (listServiceResp.getStatus() == ResultCodeEnum.SUCCESS.getCode()) {
             JSONObject jsonObj = JSONUtil.parseObj(listServiceResp.body());
             Integer count = jsonObj.getInt("count");
             List<String> doms = JSONUtil.toList(jsonObj.getJSONArray("doms"), String.class);
             for (String serviceName : doms) {
                 HttpResponse instanceResp =
-                    HttpUtil.createRequest(Method.GET, instanceListUrl + "?serviceName=" + serviceName).execute();
+                    HttpUtil.createRequest(Method.GET, instanceListUrl + "?serviceName=" + serviceName).executeAsync();
                 if (instanceResp.getStatus() == ResultCodeEnum.SUCCESS.getCode()) {
                     JSONObject instance = JSONUtil.parseObj(instanceResp.body());
                     JSONArray hosts = instance.getJSONArray("hosts");
