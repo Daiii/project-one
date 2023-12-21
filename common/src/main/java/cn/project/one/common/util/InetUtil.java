@@ -9,9 +9,18 @@ public class InetUtil {
     /**
      * 获取本机IP
      *
-     * @return host
+     * @return 主机地址
      */
     public static String getHost() {
         return HOST_INFO.getAddress();
+    }
+
+    /**
+     * 取得当前主机的名称。
+     * 
+     * @return 主机名
+     */
+    public static String getName() {
+        return HOST_INFO.getName();
     }
 }

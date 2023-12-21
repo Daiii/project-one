@@ -28,7 +28,7 @@ public class ProjectOneRefreshedListener implements ApplicationListener<ContextR
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         registerNode();
-        ThreadUtil.execAsync(new RefreshServiceTimer(nodeRegistry));
+        ThreadUtil.execute(new RefreshServiceTimer(nodeRegistry));
     }
 
     /**
