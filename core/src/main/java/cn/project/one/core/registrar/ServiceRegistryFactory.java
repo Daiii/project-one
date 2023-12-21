@@ -2,14 +2,14 @@ package cn.project.one.core.registrar;
 
 import cn.project.one.common.constants.Registry;
 
-public class NodeRegistryFactory {
+public class ServiceRegistryFactory {
 
     public static Class<?> getNodeRegistry(Registry registry) {
         if (registry.equals(Registry.Consul)) {
-            return ConsulRegistry.class;
+            return ConsulServiceRegistry.class;
         } else if (registry.equals(Registry.Nacos)) {
-            return NacosRegistry.class;
+            return NacosServiceRegistry.class;
         }
-        return ConsulRegistry.class;
+        return ConsulServiceRegistry.class;
     }
 }

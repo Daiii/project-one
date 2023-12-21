@@ -22,7 +22,12 @@ import cn.project.one.common.config.ProjectOneProperties;
 import cn.project.one.common.constants.ResultCodeEnum;
 import cn.project.one.common.instance.Instance;
 
-public class ConsulRegistry extends AbstractRegistry implements EnvironmentAware {
+/**
+ * consul
+ * 
+ * @author zhangbo
+ */
+public class ConsulServiceRegistry extends AbstractRegistry implements EnvironmentAware {
 
     private static final String REGISTER = "/v1/agent/service/register";
 

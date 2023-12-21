@@ -27,7 +27,12 @@ import cn.project.one.common.constants.ResultCodeEnum;
 import cn.project.one.common.instance.Instance;
 import cn.project.one.common.util.InetUtil;
 
-public class NacosRegistry extends AbstractRegistry implements EnvironmentAware {
+/**
+ * nacos
+ * 
+ * @author zhangbo
+ */
+public class NacosServiceRegistry extends AbstractRegistry implements EnvironmentAware {
 
     private static final String INSTANCE = "/nacos/v1/ns/instance";
 

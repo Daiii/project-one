@@ -8,11 +8,10 @@ import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotationMetadata;
 
-import cn.hutool.core.util.ObjUtil;
 import cn.project.one.common.config.ProjectOneProperties;
 import cn.project.one.common.util.BeanUtil;
 import cn.project.one.core.proxy.ServiceProxy;
-import cn.project.one.core.registrar.NodeRegistryFactory;
+import cn.project.one.core.registrar.ServiceRegistryFactory;
 import cn.project.one.springboot.processor.ProjectOneAutoConfigurationProcessor;
 
 public class ProjectOneRegistrar implements ImportBeanDefinitionRegistrar, EnvironmentAware {
@@ -39,8 +38,8 @@ public class ProjectOneRegistrar implements ImportBeanDefinitionRegistrar, Envir
         BeanUtil.registerBeanDefinitionIfNotExists(registry, ServiceProxy.class.getName(), ServiceProxy.class);
 
         // 节点注册器
-        Class<?> nodeRegistry = NodeRegistryFactory.getNodeRegistry(properties.getRegistry());
-        BeanUtil.registerBeanDefinitionIfNotExists(registry, nodeRegistry.getName(), nodeRegistry);
+        Class<?> serviceRegistrar = ServiceRegistryFactory.getNodeRegistry(properties.getRegistry());
+        BeanUtil.registerBeanDefinitionIfNotExists(registry, serviceRegistrar.getName(), serviceRegistrar);
     }
 
     @Override
