@@ -20,6 +20,7 @@ import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.util.ClassUtils;
 
 import cn.project.one.api.annotation.Feign;
 import cn.project.one.common.util.BeanUtil;
@@ -42,7 +43,6 @@ public class ProjectOneAutoConfigurationProcessor
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry beanDefinitionRegistry) throws BeansException {
         startClass = ClassUtil.deduceMainApplicationClass();
         scanPackages = getScanPackages();
-
         registerService(beanDefinitionRegistry);
     }
 
@@ -63,7 +63,7 @@ public class ProjectOneAutoConfigurationProcessor
         Set<BeanDefinitionHolder> beanDefHolders = scanner.doScan(Feign.class, scanPackages);
         for (BeanDefinitionHolder beanDefHolder : beanDefHolders) {
             Class<?> feignService = BeanUtil.getClass(beanDefHolder);
-            if (!feignService.isInterface()) {
+            if (ClassUtil.isInterface(feignService)) {
                 throw new RuntimeException("feign service " + feignService.getSimpleName() + " must be interface");
             }
 
@@ -95,7 +95,7 @@ public class ProjectOneAutoConfigurationProcessor
         }
 
         if (packages.isEmpty()) {
-            packages.add(org.springframework.util.ClassUtils.getPackageName(metadata.getClassName()));
+            packages.add(ClassUtils.getPackageName(metadata.getClassName()));
         }
     }
 
@@ -108,7 +108,7 @@ public class ProjectOneAutoConfigurationProcessor
     private void addClasses(Set<String> packages, String[] values) {
         if (values != null) {
             for (String value : values) {
-                packages.add(org.springframework.util.ClassUtils.getPackageName(value));
+                packages.add(ClassUtils.getPackageName(value));
             }
         }
     }
