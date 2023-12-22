@@ -63,7 +63,7 @@ public class ProjectOneAutoConfigurationProcessor
         Set<BeanDefinitionHolder> beanDefHolders = scanner.doScan(Feign.class, scanPackages);
         for (BeanDefinitionHolder beanDefHolder : beanDefHolders) {
             Class<?> feignService = BeanUtil.getClass(beanDefHolder);
-            if (ClassUtil.isInterface(feignService)) {
+            if (!ClassUtil.isInterface(feignService)) {
                 throw new RuntimeException("feign service " + feignService.getSimpleName() + " must be interface");
             }
 
