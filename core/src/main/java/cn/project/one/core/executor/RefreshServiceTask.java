@@ -20,7 +20,7 @@ public class RefreshServiceTask {
         CronUtil.setMatchSecond(true);
         CronUtil.start();
         CronUtil.schedule(properties.getCorn(), new RefreshServiceTimer(nodeRegistry));
-        CronUtil.schedule(properties.getCorn(), new BeatTask(nodeRegistry));
+        CronUtil.schedule(properties.getBeat(), new BeatTask(nodeRegistry));
     }
 
     public RefreshServiceTask(ProjectOneProperties properties, AbstractRegistry nodeRegistry) {

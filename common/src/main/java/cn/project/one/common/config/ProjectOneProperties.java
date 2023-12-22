@@ -25,6 +25,8 @@ public class ProjectOneProperties {
 
     String corn = "*/10 * * * * *";
 
+    String beat = "*/10 * * * * *";
+
     Registry registry = Registry.Consul;
 
     private ConsulProperties consul;
