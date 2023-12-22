@@ -1,7 +1,5 @@
 package cn.project.one.common.config;
 
-import static cn.project.one.common.config.ConsulProperties.CONSUL;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import lombok.AllArgsConstructor;
@@ -11,12 +9,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ConfigurationProperties(prefix = CONSUL)
+@ConfigurationProperties(prefix = ProjectOneProperties.CONSUL)
 public class ConsulProperties {
 
-    public static final String CONSUL = "project.one.consul";
-
-    private String address;
+    private String address = "127.0.0.1";
 
     private int port = 8500;
 }

@@ -21,15 +21,33 @@ public class ProjectOneProperties {
 
     public static final String NACOS = "project.one.nacos";
 
+    /**
+     * 服务名称
+     */
     String name;
 
-    String corn = "*/10 * * * * *";
+    /**
+     * 服务刷新crontab表达式
+     */
+    String corn = "*/30 * * * * *";
 
-    String beat = "*/10 * * * * *";
+    /**
+     * 心跳crontab表达式
+     */
+    String beat = "*/30 * * * * *";
 
+    /**
+     * 注册中心类型
+     */
     Registry registry = Registry.Consul;
 
+    /**
+     * consul配置
+     */
     private ConsulProperties consul;
 
+    /**
+     * nacos配置
+     */
     private NacosProperties nacos;
 }
