@@ -8,7 +8,6 @@ import java.util.Map;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.http.HttpException;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
@@ -19,6 +18,8 @@ import cn.project.one.api.annotation.Mapping;
 import cn.project.one.api.annotation.Param;
 import cn.project.one.api.annotation.ReqBody;
 import cn.project.one.api.annotation.RespBody;
+import cn.project.one.common.constants.ResultCodeEnum;
+import cn.project.one.common.exception.ProjectOneException;
 import cn.project.one.common.instance.Instance;
 import cn.project.one.core.loadbalance.RandomLoadBalance;
 import cn.project.one.core.service.ServiceList;
@@ -51,8 +52,13 @@ public class ServiceProxy implements InvocationHandler {
         }
         HttpResponse response = request.body(reqBody).addHeaders(headers).executeAsync();
         if (response.getStatus() != SUCCESS) {
-            throw new HttpException(
-                String.format("call %s exception request = %s, response = %s", uri, request, response));
+            if (response.getStatus() == ResultCodeEnum.NOT_FOUND.getCode()) {
+                throw new ProjectOneException(response.getStatus(),
+                    String.format(feign.service() + " service mapping " + mapping.value() + " not found. "));
+            } else {
+                throw new ProjectOneException(response.getStatus(),
+                    String.format("call %s error, request : %s", uri, response.body()));
+            }
         }
 
         if (responseBody) {
