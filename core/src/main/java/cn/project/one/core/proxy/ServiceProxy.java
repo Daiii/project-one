@@ -43,14 +43,18 @@ public class ServiceProxy implements InvocationHandler {
         Instance instance = RandomLoadBalance.getInstance().get(ServiceList.getInstance().getGroup(feign.service()));
         String uri = String.format(URL, instance.getAddress(), instance.getPort(), mapping.value());
 
-        HttpRequest request = HttpUtil.createRequest(mapping.method(), uri);
-        String reqBody = "";
-        String respBody;
+        HttpRequest httpClient = HttpUtil.createRequest(mapping.method(), uri);
+
+        String body = "";
+        Map<String, String> formData = new HashMap<>();
         Map<String, String> headers = new HashMap<>();
+        String respBody = "";
         if (ArrayUtil.isNotEmpty(args)) {
-            reqBody = generateRequest(method, args, headers);
+            body = body(method, args);
+            formData = formData(method, args);
+            headers = headers(method, args);
         }
-        HttpResponse response = request.body(reqBody).addHeaders(headers).executeAsync();
+        HttpResponse response = httpClient.body(body).formStr(formData).headerMap(headers, false).execute();
         if (response.getStatus() != SUCCESS) {
             if (response.getStatus() == ResultCodeEnum.NOT_FOUND.getCode()) {
                 throw new ProjectOneException(response.getStatus(),
@@ -70,7 +74,7 @@ public class ServiceProxy implements InvocationHandler {
         return respBody;
     }
 
-    private String generateRequest(Method method, Object[] args, Map<String, String> headers) {
+    private String body(Method method, Object[] args) {
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();
         if (ArrayUtil.isEmpty(parameterAnnotations)) {
             return null;
@@ -80,14 +84,6 @@ public class ServiceProxy implements InvocationHandler {
         Map<String, Object> parameters = new HashMap<>();
         for (Annotation[] parameterAnnotation : parameterAnnotations) {
             for (int j = 0; j < parameterAnnotation.length; j++) {
-                if (parameterAnnotation[j] instanceof Param) {
-                    Param param = (Param)parameterAnnotation[j];
-                    parameters.put(param.name(), args[j]);
-                }
-                if (parameterAnnotation[j] instanceof Header) {
-                    Header header = (Header)parameterAnnotation[j];
-                    headers.put(header.name(), args[j] == null ? header.defaultValue() : StrUtil.toString(args[j]));
-                }
                 if (parameterAnnotation[j] instanceof ReqBody) {
                     body = JSONUtil.toJsonStr(args[j]);
                     return body;
@@ -96,5 +92,42 @@ public class ServiceProxy implements InvocationHandler {
         }
         body = JSONUtil.toJsonStr(parameters);
         return body;
+    }
+
+    private Map<String, String> formData(Method method, Object[] args) {
+        Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+        if (ArrayUtil.isEmpty(parameterAnnotations)) {
+            return null;
+        }
+
+        Map<String, String> parameters = new HashMap<>();
+        for (Annotation[] parameterAnnotation : parameterAnnotations) {
+            for (int j = 0; j < parameterAnnotation.length; j++) {
+                if (parameterAnnotation[j] instanceof Param) {
+                    Param param = (Param)parameterAnnotation[j];
+                    parameters.put(param.name(), StrUtil.toString(args[j]));
+                }
+            }
+        }
+        return parameters;
+    }
+
+    private Map<String, String> headers(Method method, Object[] args) {
+        Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+        if (ArrayUtil.isEmpty(parameterAnnotations)) {
+            return null;
+        }
+
+        Map<String, String> head = new HashMap<>();
+
+        for (Annotation[] parameterAnnotation : parameterAnnotations) {
+            for (int j = 0; j < parameterAnnotation.length; j++) {
+                if (parameterAnnotation[j] instanceof Header) {
+                    Header header = (Header)parameterAnnotation[j];
+                    head.put(header.name(), args[j] == null ? header.defaultValue() : StrUtil.toString(args[j]));
+                }
+            }
+        }
+        return head;
     }
 }
