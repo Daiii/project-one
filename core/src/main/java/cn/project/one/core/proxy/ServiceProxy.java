@@ -6,6 +6,8 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.hutool.core.date.TimeInterval;
+import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
@@ -35,8 +37,11 @@ public class ServiceProxy implements InvocationHandler {
 
     private static final int SUCCESS = 200;
 
+    private final TimeInterval interval = new TimeInterval();
+
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) {
+        interval.start();
         Feign feign = method.getDeclaringClass().getAnnotation(Feign.class);
         Mapping mapping = method.getAnnotation(Mapping.class);
         boolean responseBody = method.isAnnotationPresent(RespBody.class);
@@ -70,6 +75,9 @@ public class ServiceProxy implements InvocationHandler {
         } else {
             respBody = response.body();
         }
+
+        Console.log("Call [{} {}.{}] execute spend [{}]ms return value [{}]", feign.service(),
+            method.getDeclaringClass().getSimpleName(), method.getName(), interval.intervalMs(), respBody);
 
         return respBody;
     }

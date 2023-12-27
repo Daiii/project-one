@@ -1,10 +1,9 @@
 package cn.project.one.core.factory;
 
-import java.lang.reflect.Proxy;
-
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import cn.hutool.aop.ProxyUtil;
 import cn.project.one.core.proxy.ServiceProxy;
 
 /**
@@ -26,7 +25,7 @@ public class FeignServiceFactoryBean implements FactoryBean<Object> {
 
     @Override
     public Object getObject() throws Exception {
-        return Proxy.newProxyInstance(target.getClassLoader(), new Class[] {target}, serviceProxy);
+        return ProxyUtil.newProxyInstance(target.getClassLoader(), serviceProxy, target);
     }
 
     @Override
