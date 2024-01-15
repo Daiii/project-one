@@ -11,7 +11,7 @@ import cn.hutool.core.thread.ThreadUtil;
 import cn.project.one.common.Node;
 import cn.project.one.common.util.InetUtil;
 import cn.project.one.core.executor.RefreshServiceTimer;
-import cn.project.one.core.registrar.AbstractRegistry;
+import cn.project.one.core.registrar.AbstractServiceRegistry;
 
 /**
  * 监听容器刷新事件
@@ -23,7 +23,7 @@ public class ProjectOneRefreshedListener implements ApplicationListener<ContextR
     private Environment environment;
 
     @Autowired
-    AbstractRegistry nodeRegistry;
+    AbstractServiceRegistry nodeRegistry;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {

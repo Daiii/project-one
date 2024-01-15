@@ -32,7 +32,7 @@ import cn.project.one.common.util.InetUtil;
  * 
  * @author zhangbo
  */
-public class NacosServiceRegistry extends AbstractRegistry implements EnvironmentAware {
+public class NacosServiceServiceRegistry extends AbstractServiceRegistry implements EnvironmentAware {
 
     private static final String INSTANCE = "/nacos/v1/ns/instance";
 

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.project.one.common.instance.Instance;
-import cn.project.one.core.registrar.AbstractRegistry;
+import cn.project.one.core.registrar.AbstractServiceRegistry;
 import cn.project.one.core.service.ServiceList;
 
 /**
@@ -15,7 +15,7 @@ import cn.project.one.core.service.ServiceList;
  * @since 2023/7/28
  */
 public class RefreshServiceTimer implements Runnable {
-    private final AbstractRegistry nodeRegistry;
+    private final AbstractServiceRegistry nodeRegistry;
 
     private static final Object LOCK = new Object();
 
@@ -34,7 +34,7 @@ public class RefreshServiceTimer implements Runnable {
         }
     }
 
-    public RefreshServiceTimer(AbstractRegistry nodeRegistry) {
+    public RefreshServiceTimer(AbstractServiceRegistry nodeRegistry) {
         this.nodeRegistry = nodeRegistry;
     }
 }

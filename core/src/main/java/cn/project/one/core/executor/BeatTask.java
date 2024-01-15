@@ -2,11 +2,11 @@ package cn.project.one.core.executor;
 
 import cn.project.one.common.Node;
 import cn.project.one.common.util.InetUtil;
-import cn.project.one.core.registrar.AbstractRegistry;
+import cn.project.one.core.registrar.AbstractServiceRegistry;
 
 public class BeatTask implements Runnable {
 
-    private final AbstractRegistry nodeRegistry;
+    private final AbstractServiceRegistry nodeRegistry;
 
     @Override
     public void run() {
@@ -14,7 +14,7 @@ public class BeatTask implements Runnable {
         nodeRegistry.beat(node);
     }
 
-    public BeatTask(AbstractRegistry nodeRegistry) {
+    public BeatTask(AbstractServiceRegistry nodeRegistry) {
         this.nodeRegistry = nodeRegistry;
     }
 }

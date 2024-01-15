@@ -27,7 +27,7 @@ import cn.project.one.common.instance.Instance;
  * 
  * @author zhangbo
  */
-public class ConsulServiceRegistry extends AbstractRegistry implements EnvironmentAware {
+public class ConsulServiceServiceRegistry extends AbstractServiceRegistry implements EnvironmentAware {
 
     private static final String REGISTER = "/v1/agent/service/register";
 

@@ -5,7 +5,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
 
 import cn.project.one.common.util.InetUtil;
-import cn.project.one.core.registrar.AbstractRegistry;
+import cn.project.one.core.registrar.AbstractServiceRegistry;
 
 /**
  * 监听关闭容器事件
@@ -15,7 +15,7 @@ import cn.project.one.core.registrar.AbstractRegistry;
 public class ProjectOneClosedListener implements ApplicationListener<ContextClosedEvent> {
 
     @Autowired
-    AbstractRegistry nodeRegistry;
+    AbstractServiceRegistry nodeRegistry;
 
     @Override
     public void onApplicationEvent(ContextClosedEvent event) {

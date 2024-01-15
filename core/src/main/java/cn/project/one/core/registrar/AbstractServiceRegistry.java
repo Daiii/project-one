@@ -5,7 +5,7 @@ import java.util.HashMap;
 import cn.project.one.common.Node;
 import cn.project.one.common.instance.Instance;
 
-public abstract class AbstractRegistry implements NodeRegistry {
+public abstract class AbstractServiceRegistry implements ServiceRegistry {
 
     /**
      * 注册服务
