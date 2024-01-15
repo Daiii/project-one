@@ -24,7 +24,7 @@ public class FeignServiceFactoryBean implements FactoryBean<Object> {
     }
 
     @Override
-    public Object getObject() throws Exception {
+    public Object getObject() {
         return ProxyUtil.newProxyInstance(target.getClassLoader(), serviceProxy, target);
     }
 
