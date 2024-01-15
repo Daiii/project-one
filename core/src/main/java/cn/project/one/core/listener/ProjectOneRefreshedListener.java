@@ -1,28 +1,28 @@
 package cn.project.one.core.listener;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.EnvironmentAware;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.core.env.Environment;
-
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.thread.ThreadUtil;
 import cn.project.one.common.Node;
 import cn.project.one.common.util.InetUtil;
 import cn.project.one.core.executor.RefreshServiceTimer;
 import cn.project.one.core.registrar.AbstractServiceRegistry;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.EnvironmentAware;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.core.env.Environment;
+
+import javax.annotation.Resource;
 
 /**
  * 监听容器刷新事件
- * 
+ *
  * @since 2023/7/28
  */
 public class ProjectOneRefreshedListener implements ApplicationListener<ContextRefreshedEvent>, EnvironmentAware {
 
     private Environment environment;
 
-    @Autowired
+    @Resource
     AbstractServiceRegistry nodeRegistry;
 
     @Override

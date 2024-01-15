@@ -14,12 +14,7 @@ import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
-import cn.project.one.api.annotation.Feign;
-import cn.project.one.api.annotation.Header;
-import cn.project.one.api.annotation.Mapping;
-import cn.project.one.api.annotation.Param;
-import cn.project.one.api.annotation.ReqBody;
-import cn.project.one.api.annotation.RespBody;
+import cn.project.one.api.annotation.*;
 import cn.project.one.common.constants.ResultCodeEnum;
 import cn.project.one.common.exception.ProjectOneException;
 import cn.project.one.common.instance.Instance;
@@ -28,7 +23,7 @@ import cn.project.one.core.service.ServiceList;
 
 /**
  * 代理执行类
- * 
+ *
  * @since 2023/7/28
  */
 public class ServiceProxy implements InvocationHandler {
@@ -53,7 +48,7 @@ public class ServiceProxy implements InvocationHandler {
         String body = "";
         Map<String, String> formData = new HashMap<>();
         Map<String, String> headers = new HashMap<>();
-        String respBody = "";
+        String respBody;
         if (ArrayUtil.isNotEmpty(args)) {
             body = body(method, args);
             formData = formData(method, args);
