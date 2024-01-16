@@ -15,17 +15,18 @@ import cn.project.one.core.registrar.AbstractServiceRegistry;
 public class ProjectOneAutoConfiguration {
 
     @Bean
-    public ProjectOneRefreshedListener fetchService() {
+    public ProjectOneRefreshedListener projectOneRefreshedListener() {
         return new ProjectOneRefreshedListener();
     }
 
     @Bean
-    public ProjectOneClosedListener listener() {
+    public ProjectOneClosedListener projectOneClosedListener() {
         return new ProjectOneClosedListener();
     }
 
     @Bean
-    public RefreshServiceTask refreshService(ProjectOneProperties properties, AbstractServiceRegistry nodeRegistry) {
-        return new RefreshServiceTask(properties, nodeRegistry);
+    public RefreshServiceTask refreshServiceTask(ProjectOneProperties properties,
+        AbstractServiceRegistry serviceRegistry) {
+        return new RefreshServiceTask(properties, serviceRegistry);
     }
 }
