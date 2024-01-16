@@ -19,7 +19,7 @@ import cn.project.one.common.constants.ResultCodeEnum;
 import cn.project.one.common.exception.ProjectOneException;
 import cn.project.one.common.instance.Instance;
 import cn.project.one.core.loadbalance.RandomLoadBalance;
-import cn.project.one.core.service.ServiceList;
+import cn.project.one.core.instance.ServiceList;
 
 /**
  * 代理执行类

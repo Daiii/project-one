@@ -6,15 +6,15 @@ import cn.project.one.core.registrar.AbstractServiceRegistry;
 
 public class BeatTask implements Runnable {
 
-    private final AbstractServiceRegistry nodeRegistry;
+    private final AbstractServiceRegistry serviceRegistry;
 
     @Override
     public void run() {
         Node node = new Node(InetUtil.getHost(), "project-one-test", InetUtil.getHost(), 8080);
-        nodeRegistry.beat(node);
+        serviceRegistry.beat(node);
     }
 
-    public BeatTask(AbstractServiceRegistry nodeRegistry) {
-        this.nodeRegistry = nodeRegistry;
+    public BeatTask(AbstractServiceRegistry serviceRegistry) {
+        this.serviceRegistry = serviceRegistry;
     }
 }

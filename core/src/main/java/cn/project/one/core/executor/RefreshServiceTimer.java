@@ -7,7 +7,7 @@ import java.util.Map;
 
 import cn.project.one.common.instance.Instance;
 import cn.project.one.core.registrar.AbstractServiceRegistry;
-import cn.project.one.core.service.ServiceList;
+import cn.project.one.core.instance.ServiceList;
 
 /**
  * 刷新节点任务
@@ -15,14 +15,14 @@ import cn.project.one.core.service.ServiceList;
  * @since 2023/7/28
  */
 public class RefreshServiceTimer implements Runnable {
-    private final AbstractServiceRegistry nodeRegistry;
+    private final AbstractServiceRegistry serviceRegistry;
 
     private static final Object LOCK = new Object();
 
     @Override
     public void run() {
         synchronized (LOCK) {
-            HashMap<String, Instance> services = nodeRegistry.services();
+            HashMap<String, Instance> services = serviceRegistry.services();
             ServiceList.INSTANCES = services;
             Map<String, List<Instance>> map = new HashMap<>();
             Iterable<Map.Entry<String, Instance>> entries = services.entrySet();
@@ -34,7 +34,7 @@ public class RefreshServiceTimer implements Runnable {
         }
     }
 
-    public RefreshServiceTimer(AbstractServiceRegistry nodeRegistry) {
-        this.nodeRegistry = nodeRegistry;
+    public RefreshServiceTimer(AbstractServiceRegistry serviceRegistry) {
+        this.serviceRegistry = serviceRegistry;
     }
 }

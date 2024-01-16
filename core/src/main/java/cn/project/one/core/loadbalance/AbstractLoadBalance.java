@@ -3,7 +3,7 @@ package cn.project.one.core.loadbalance;
 import java.util.List;
 
 import cn.project.one.common.instance.Instance;
-import cn.project.one.core.service.ServiceList;
+import cn.project.one.core.instance.ServiceList;
 
 public abstract class AbstractLoadBalance implements LoadBalance {
 

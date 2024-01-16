@@ -11,6 +11,7 @@ import org.springframework.core.type.AnnotationMetadata;
 import cn.project.one.common.config.ProjectOneProperties;
 import cn.project.one.common.util.BeanUtil;
 import cn.project.one.core.proxy.ServiceProxy;
+import cn.project.one.core.registrar.AbstractServiceRegistry;
 import cn.project.one.core.registrar.ServiceRegistryFactory;
 import cn.project.one.springboot.processor.ProjectOneAutoConfigurationProcessor;
 
@@ -38,7 +39,8 @@ public class ProjectOneRegistrar implements ImportBeanDefinitionRegistrar, Envir
         BeanUtil.registerBeanDefinitionIfNotExists(registry, ServiceProxy.class.getName(), ServiceProxy.class);
 
         // 节点注册器
-        Class<?> serviceRegistry = ServiceRegistryFactory.getNodeRegistry(properties.getRegistry());
+        Class<? extends AbstractServiceRegistry> serviceRegistry =
+            ServiceRegistryFactory.getServiceRegistry(properties.getRegistry());
         BeanUtil.registerBeanDefinitionIfNotExists(registry, serviceRegistry.getName(), serviceRegistry);
     }
 
