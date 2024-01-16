@@ -42,4 +42,4 @@ public interface IndexService() {
 }
 ```
 
-> 说明：@Target必须是接口，参数service是被调用的工程名。
+> 说明：@Feign必须是接口，参数service是被调用的工程名。
