@@ -6,10 +6,10 @@ public class ServiceRegistryFactory {
 
     public static Class<?> getNodeRegistry(Registry registry) {
         if (registry.equals(Registry.Consul)) {
-            return ConsulServiceServiceRegistry.class;
+            return ConsulServiceRegistry.class;
         } else if (registry.equals(Registry.Nacos)) {
-            return NacosServiceServiceRegistry.class;
+            return NacosServiceRegistry.class;
         }
-        return ConsulServiceServiceRegistry.class;
+        return ConsulServiceRegistry.class;
     }
 }
