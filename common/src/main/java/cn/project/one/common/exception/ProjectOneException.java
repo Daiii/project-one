@@ -1,8 +1,10 @@
 package cn.project.one.common.exception;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class ProjectOneException extends RuntimeException {
 
     private int httpStatus;
