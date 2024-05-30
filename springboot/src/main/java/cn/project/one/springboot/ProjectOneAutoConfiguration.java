@@ -1,5 +1,6 @@
 package cn.project.one.springboot;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,7 @@ import cn.project.one.core.listener.ProjectOneRefreshedListener;
 import cn.project.one.core.registrar.AbstractServiceRegistry;
 
 @Configuration(proxyBeanMethods = false)
+@ConditionalOnProperty(prefix = "project.one", value = "enable", matchIfMissing = true)
 @EnableConfigurationProperties(value = {ProjectOneProperties.class})
 public class ProjectOneAutoConfiguration {
 

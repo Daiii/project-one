@@ -15,11 +15,15 @@ import lombok.NoArgsConstructor;
 @ConfigurationProperties(prefix = PREFIX)
 public class ProjectOneProperties {
 
+    private static final boolean DEFAULT_DEFAULT = false;
     public static final String PREFIX = "project.one";
-
     public static final String CONSUL = "project.one.consul";
-
     public static final String NACOS = "project.one.nacos";
+
+    /**
+     * 是否开启
+     */
+    private Boolean enable = DEFAULT_DEFAULT;
 
     /**
      * 服务名称
