@@ -8,7 +8,6 @@ import lombok.EqualsAndHashCode;
 public class ProjectOneException extends RuntimeException {
 
     private int httpStatus;
-
     private String message;
 
     public ProjectOneException(int httpStatus, String message) {

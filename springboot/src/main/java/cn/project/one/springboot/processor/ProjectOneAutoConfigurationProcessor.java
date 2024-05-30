@@ -32,11 +32,8 @@ public class ProjectOneAutoConfigurationProcessor
     implements BeanDefinitionRegistryPostProcessor, EnvironmentAware, ResourceLoaderAware {
 
     private Environment environment;
-
     private ResourceLoader resourceLoader;
-
     private Class<?> startClass = null;
-
     private String[] scanPackages = null;
 
     @Override

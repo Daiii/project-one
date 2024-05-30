@@ -16,7 +16,6 @@ public class FeignServiceFactoryBean implements FactoryBean<Object> {
 
     @Resource
     ServiceProxy serviceProxy;
-
     private final Class<?> target;
 
     public FeignServiceFactoryBean(Class<?> target) {

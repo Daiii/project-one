@@ -14,12 +14,17 @@ import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
-import cn.project.one.api.annotation.*;
+import cn.project.one.api.annotation.Feign;
+import cn.project.one.api.annotation.Header;
+import cn.project.one.api.annotation.Mapping;
+import cn.project.one.api.annotation.Param;
+import cn.project.one.api.annotation.ReqBody;
+import cn.project.one.api.annotation.RespBody;
 import cn.project.one.common.constants.ResultCodeEnum;
 import cn.project.one.common.exception.ProjectOneException;
 import cn.project.one.common.instance.Instance;
-import cn.project.one.core.loadbalance.RandomLoadBalance;
 import cn.project.one.core.instance.ServiceList;
+import cn.project.one.core.loadbalance.RandomLoadBalance;
 
 /**
  * 代理执行类
@@ -28,10 +33,8 @@ import cn.project.one.core.instance.ServiceList;
  */
 public class ServiceProxy implements InvocationHandler {
 
-    private static final String URL = "%s:%s%s";
-
+    private static final String URL_FORMAT = "%s:%s%s";
     private static final int SUCCESS = 200;
-
     private final TimeInterval interval = new TimeInterval();
 
     @Override
@@ -41,7 +44,7 @@ public class ServiceProxy implements InvocationHandler {
         Mapping mapping = method.getAnnotation(Mapping.class);
         boolean responseBody = method.isAnnotationPresent(RespBody.class);
         Instance instance = RandomLoadBalance.getInstance().get(ServiceList.getInstance().getGroup(feign.service()));
-        String uri = String.format(URL, instance.getAddress(), instance.getPort(), mapping.value());
+        String uri = String.format(URL_FORMAT, instance.getAddress(), instance.getPort(), mapping.value());
 
         HttpRequest httpClient = HttpUtil.createRequest(mapping.method(), uri);
 

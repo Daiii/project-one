@@ -35,19 +35,11 @@ import cn.project.one.common.util.InetUtil;
 public class NacosServiceRegistry extends AbstractServiceRegistry implements EnvironmentAware {
 
     private static final String INSTANCE = "/nacos/v1/ns/instance";
-
     private static final String INSTANCE_LIST = "/nacos/v1/ns/instance/list";
-
     private static final String SERVICE_LIST = "/nacos/v1/ns/service/list";
-
     private static final String BEAT = "/nacos/v1/ns/instance/beat";
-
     private static final String URL = "%s:%s";
-
-    private ProjectOneProperties properties;
-
     private NacosProperties nacosProperties;
-
     private Environment environment;
 
     @Override
@@ -141,7 +133,8 @@ public class NacosServiceRegistry extends AbstractServiceRegistry implements Env
 
     @PostConstruct
     public void init() {
-        properties = Binder.get(environment).bind(ProjectOneProperties.PREFIX, ProjectOneProperties.class).get();
+        ProjectOneProperties properties =
+            Binder.get(environment).bind(ProjectOneProperties.PREFIX, ProjectOneProperties.class).get();
         nacosProperties = properties.getNacos();
     }
 }

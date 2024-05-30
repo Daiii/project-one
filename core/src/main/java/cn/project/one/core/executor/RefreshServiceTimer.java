@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import cn.project.one.common.instance.Instance;
-import cn.project.one.core.registrar.AbstractServiceRegistry;
 import cn.project.one.core.instance.ServiceList;
+import cn.project.one.core.registrar.AbstractServiceRegistry;
 
 /**
  * 刷新节点任务
@@ -15,8 +15,8 @@ import cn.project.one.core.instance.ServiceList;
  * @since 2023/7/28
  */
 public class RefreshServiceTimer implements Runnable {
-    private final AbstractServiceRegistry serviceRegistry;
 
+    private final AbstractServiceRegistry serviceRegistry;
     private static final Object LOCK = new Object();
 
     @Override

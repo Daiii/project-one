@@ -1,8 +1,8 @@
 package cn.project.one.core.loadbalance;
 
-import cn.project.one.common.instance.Instance;
-
 import java.util.List;
+
+import cn.project.one.common.instance.Instance;
 
 public interface LoadBalance {
 

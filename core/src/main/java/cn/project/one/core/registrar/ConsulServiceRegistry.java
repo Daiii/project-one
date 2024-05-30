@@ -30,21 +30,12 @@ import cn.project.one.common.instance.Instance;
 public class ConsulServiceRegistry extends AbstractServiceRegistry implements EnvironmentAware {
 
     private static final String REGISTER = "/v1/agent/service/register";
-
     private static final String SERVICES = "/v1/agent/services";
-
     private static final String DEREGISTER = "/v1/agent/service/deregister/";
-
     private static final String CHECKS = "/v1/agent/checks";
-
     private static final String CHECK_DEREGISTER = "/v1/agent/check/deregister/";
-
     private static final String URL = "%s:%s";
-
-    ProjectOneProperties properties;
-
     ConsulProperties consulProperties;
-
     Environment environment;
 
     @Override
@@ -89,7 +80,8 @@ public class ConsulServiceRegistry extends AbstractServiceRegistry implements En
 
     @PostConstruct
     public void init() {
-        properties = Binder.get(environment).bind(ProjectOneProperties.PREFIX, ProjectOneProperties.class).get();
+        ProjectOneProperties properties =
+            Binder.get(environment).bind(ProjectOneProperties.PREFIX, ProjectOneProperties.class).get();
         consulProperties = properties.getConsul();
     }
 

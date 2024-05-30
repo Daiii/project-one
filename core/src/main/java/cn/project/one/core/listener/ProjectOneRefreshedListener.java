@@ -22,7 +22,6 @@ import cn.project.one.core.registrar.AbstractServiceRegistry;
 public class ProjectOneRefreshedListener implements ApplicationListener<ContextRefreshedEvent>, EnvironmentAware {
 
     private Environment environment;
-
     @Resource
     AbstractServiceRegistry serviceRegistry;
 

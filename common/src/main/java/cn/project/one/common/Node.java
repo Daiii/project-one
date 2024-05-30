@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Node{
+public class Node {
 
     private String ID;
 

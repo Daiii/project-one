@@ -12,7 +12,6 @@ import cn.project.one.core.registrar.AbstractServiceRegistry;
 public class RefreshServiceTask {
 
     private final ProjectOneProperties properties;
-
     private final AbstractServiceRegistry serviceRegistry;
 
     @PostConstruct

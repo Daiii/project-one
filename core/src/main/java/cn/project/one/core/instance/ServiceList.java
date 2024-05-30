@@ -16,7 +16,6 @@ import cn.project.one.common.instance.Instance;
 public class ServiceList {
 
     public static Map<String, Instance> INSTANCES = new HashMap<>();
-
     public static Map<String, List<Instance>> GROUP = new HashMap<>();
 
     /**
