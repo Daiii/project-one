@@ -2,10 +2,11 @@ package cn.project.one.core.listener;
 
 import javax.annotation.Resource;
 
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.thread.ThreadUtil;
@@ -17,18 +18,19 @@ import cn.project.one.core.registrar.AbstractServiceRegistry;
 /**
  * 监听容器刷新事件
  *
- * @since 2023/7/28
+ * @since 2024/7/15
  */
-public class ProjectOneRefreshedListener implements ApplicationListener<ContextRefreshedEvent>, EnvironmentAware {
+@Component
+public class ProjectOneRefreshedListener implements EnvironmentAware {
 
     private Environment environment;
     @Resource
     AbstractServiceRegistry serviceRegistry;
 
-    @Override
-    public void onApplicationEvent(ContextRefreshedEvent event) {
+    @EventListener(ContextRefreshedEvent.class)
+    public void onContextRefreshed(ContextRefreshedEvent event) {
         registerNode();
-        ThreadUtil.execute(new RefreshServiceTimer(serviceRegistry));
+        ThreadUtil.execute(() -> new RefreshServiceTimer(serviceRegistry));
     }
 
     /**

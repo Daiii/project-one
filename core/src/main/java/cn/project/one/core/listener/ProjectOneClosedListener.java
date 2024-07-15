@@ -2,8 +2,9 @@ package cn.project.one.core.listener;
 
 import javax.annotation.Resource;
 
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 
 import cn.project.one.common.util.InetUtil;
 import cn.project.one.core.registrar.AbstractServiceRegistry;
@@ -11,15 +12,16 @@ import cn.project.one.core.registrar.AbstractServiceRegistry;
 /**
  * 监听关闭容器事件
  *
- * @since 2023/7/28
+ * @since 2024/7/15
  */
-public class ProjectOneClosedListener implements ApplicationListener<ContextClosedEvent> {
+@Component
+public class ProjectOneClosedListener {
 
     @Resource
     AbstractServiceRegistry serviceRegistry;
 
-    @Override
-    public void onApplicationEvent(ContextClosedEvent event) {
+    @EventListener(ContextClosedEvent.class)
+    public void contextClosedEvent(ContextClosedEvent event) {
         deregisterNode();
     }
 
