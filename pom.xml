@@ -22,7 +22,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-boot-dependencies.version>2.6.6</spring-boot-dependencies.version>
         <revision>1.0.0-SNAPSHOT</revision>
-        <hutool.version>5.8.16</hutool.version>
+        <hutool.version>5.8.29</hutool.version>
     </properties>
 
     <dependencyManagement>
