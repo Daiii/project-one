@@ -33,8 +33,8 @@ public class ProjectOneAutoConfigurationProcessor
 
     private Environment environment;
     private ResourceLoader resourceLoader;
-    private Class<?> startClass = null;
-    private String[] scanPackages = null;
+    private Class<?> startClass;
+    private String[] scanPackages;
 
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry beanDefinitionRegistry) throws BeansException {
