@@ -33,9 +33,7 @@ public class InterfaceScanner extends ClassPathBeanDefinitionScanner {
     public <T extends Annotation> Set<BeanDefinitionHolder> doScan(Class<T> annotation, String... basePackages) {
         addIncludeFilter(new AnnotationTypeFilter(annotation));
         Set<BeanDefinitionHolder> beanDefinitionHolders = super.doScan(basePackages);
-        for (BeanDefinitionHolder h : beanDefinitionHolders) {
-            getRegistry().removeBeanDefinition(h.getBeanName());
-        }
+        beanDefinitionHolders.forEach(h -> getRegistry().removeBeanDefinition(h.getBeanName()));
         return beanDefinitionHolders;
     }
 }

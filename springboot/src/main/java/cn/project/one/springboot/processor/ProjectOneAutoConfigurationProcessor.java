@@ -1,5 +1,6 @@
 package cn.project.one.springboot.processor;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -58,7 +59,7 @@ public class ProjectOneAutoConfigurationProcessor
         DefaultBeanNameGenerator defaultBeanNameGenerator = new DefaultBeanNameGenerator();
         InterfaceScanner scanner = new InterfaceScanner(registry, false, environment, resourceLoader);
         Set<BeanDefinitionHolder> beanDefHolders = scanner.doScan(Feign.class, scanPackages);
-        for (BeanDefinitionHolder beanDefHolder : beanDefHolders) {
+        beanDefHolders.forEach(beanDefHolder -> {
             Class<?> feignService = BeanUtil.getClass(beanDefHolder);
             if (!ClassUtil.isInterface(feignService)) {
                 throw new RuntimeException("feign service " + feignService.getSimpleName() + " must be interface");
@@ -70,8 +71,7 @@ public class ProjectOneAutoConfigurationProcessor
             beanDefinition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
             registry.registerBeanDefinition(defaultBeanNameGenerator.generateBeanName(beanDefinition, registry),
                 beanDefinition);
-        }
-
+        });
     }
 
     private void addComponentScanningPackages(Set<String> packages, AnnotationMetadata metadata) {
@@ -104,9 +104,7 @@ public class ProjectOneAutoConfigurationProcessor
 
     private void addClasses(Set<String> packages, String[] values) {
         if (values != null) {
-            for (String value : values) {
-                packages.add(ClassUtils.getPackageName(value));
-            }
+            Arrays.stream(values).forEach(value -> packages.add(ClassUtils.getPackageName(value)));
         }
     }
 
