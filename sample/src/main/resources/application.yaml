@@ -3,13 +3,13 @@ server:
 
 spring:
   application:
-    name: project-one
+    name: project-one-test
 
 project:
   one:
     enable: true
     corn: "*/10 * * * * *"
-    registry: consul
+    registry: Consul
     consul:
       address: 127.0.0.1
       port: 8500

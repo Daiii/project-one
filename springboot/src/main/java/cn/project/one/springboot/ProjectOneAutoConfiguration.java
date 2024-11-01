@@ -7,12 +7,18 @@ import org.springframework.context.annotation.Configuration;
 
 import cn.project.one.common.config.ProjectOneProperties;
 import cn.project.one.core.executor.RefreshServiceTask;
+import cn.project.one.core.listener.ProjectOneRefreshedListener;
 import cn.project.one.core.registrar.AbstractServiceRegistry;
 
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(prefix = "project.one", value = "enable", matchIfMissing = true)
 @EnableConfigurationProperties(value = {ProjectOneProperties.class})
 public class ProjectOneAutoConfiguration {
+
+    @Bean
+    public ProjectOneRefreshedListener projectOneRefreshedListener(AbstractServiceRegistry serviceRegistry) {
+        return new ProjectOneRefreshedListener(serviceRegistry);
+    }
 
     @Bean
     public RefreshServiceTask refreshServiceTask(ProjectOneProperties properties,

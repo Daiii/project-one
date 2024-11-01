@@ -3,7 +3,6 @@ package cn.project.one.core.listener;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Component;
 
 import cn.hutool.core.thread.ThreadUtil;
 import cn.project.one.common.Node;
@@ -17,7 +16,6 @@ import lombok.RequiredArgsConstructor;
  *
  * @since 2024/7/15
  */
-@Component
 @RequiredArgsConstructor
 public class ProjectOneRefreshedListener {
 
