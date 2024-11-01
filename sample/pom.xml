@@ -26,12 +26,6 @@
 
         <dependency>
             <groupId>cn.project.one</groupId>
-            <artifactId>project-one-all</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cn.project.one</groupId>
             <artifactId>project-one-springboot</artifactId>
             <version>${revision}</version>
         </dependency>
