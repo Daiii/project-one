@@ -1,0 +1,18 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: project-one
+
+project:
+  one:
+    enable: true
+    corn: "*/10 * * * * *"
+    registry: consul
+    consul:
+      address: 127.0.0.1
+      port: 8500
+    nacos:
+      address: 127.0.0.1
+      port: 8848
