@@ -1,7 +1,5 @@
 package cn.project.one.core.listener;
 
-import javax.annotation.Resource;
-
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -14,6 +12,7 @@ import cn.project.one.common.Node;
 import cn.project.one.common.util.InetUtil;
 import cn.project.one.core.executor.RefreshServiceTimer;
 import cn.project.one.core.registrar.AbstractServiceRegistry;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 监听容器刷新事件
@@ -21,14 +20,14 @@ import cn.project.one.core.registrar.AbstractServiceRegistry;
  * @since 2024/7/15
  */
 @Component
+@RequiredArgsConstructor
 public class ProjectOneRefreshedListener implements EnvironmentAware {
 
     private Environment environment;
-    @Resource
-    AbstractServiceRegistry serviceRegistry;
+    private final AbstractServiceRegistry serviceRegistry;
 
     @EventListener(ContextRefreshedEvent.class)
-    public void onContextRefreshed(ContextRefreshedEvent event) {
+    public void contextRefreshedEvent(ContextRefreshedEvent event) {
         registerNode();
         ThreadUtil.execute(() -> new RefreshServiceTimer(serviceRegistry));
     }
