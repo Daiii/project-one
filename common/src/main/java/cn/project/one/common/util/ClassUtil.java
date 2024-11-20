@@ -28,6 +28,9 @@ public class ClassUtil {
      * @return 是否为接口
      */
     public static boolean isInterface(Class<?> clazz) {
+        if (clazz == null) {
+            throw new RuntimeException("clazz is null");
+        }
         return clazz.isInterface();
     }
 }
