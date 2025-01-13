@@ -6,6 +6,8 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
+
 import cn.hutool.core.date.TimeInterval;
 import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.ArrayUtil;
@@ -20,7 +22,6 @@ import cn.project.one.api.annotation.Mapping;
 import cn.project.one.api.annotation.Param;
 import cn.project.one.api.annotation.ReqBody;
 import cn.project.one.api.annotation.RespBody;
-import cn.project.one.common.constants.ResultCodeEnum;
 import cn.project.one.common.exception.ProjectOneException;
 import cn.project.one.common.instance.Instance;
 import cn.project.one.core.instance.ServiceList;
@@ -34,7 +35,6 @@ import cn.project.one.core.loadbalance.RandomLoadBalance;
 public class ServiceProxy implements InvocationHandler {
 
     private static final String URL_FORMAT = "%s:%s%s";
-    private static final int SUCCESS = 200;
     private final TimeInterval interval = new TimeInterval();
 
     @Override
@@ -58,8 +58,8 @@ public class ServiceProxy implements InvocationHandler {
             headers = headers(method, args);
         }
         HttpResponse response = httpClient.body(body).formStr(formData).headerMap(headers, false).execute();
-        if (response.getStatus() != SUCCESS) {
-            if (response.getStatus() == ResultCodeEnum.NOT_FOUND.getCode()) {
+        if (response.getStatus() != HttpStatus.OK.value()) {
+            if (response.getStatus() == HttpStatus.NOT_FOUND.value()) {
                 throw new ProjectOneException(response.getStatus(),
                     String.format(feign.service() + " service mapping " + mapping.value() + " not found. "));
             } else {

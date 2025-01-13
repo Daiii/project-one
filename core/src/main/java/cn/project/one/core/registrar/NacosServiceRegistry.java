@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Console;
@@ -23,7 +24,6 @@ import cn.hutool.json.JSONUtil;
 import cn.project.one.common.Node;
 import cn.project.one.common.config.NacosProperties;
 import cn.project.one.common.config.ProjectOneProperties;
-import cn.project.one.common.constants.ResultCodeEnum;
 import cn.project.one.common.instance.Instance;
 import cn.project.one.common.util.InetUtil;
 
@@ -51,7 +51,7 @@ public class NacosServiceRegistry extends AbstractServiceRegistry implements Env
         formData.put("port", StrUtil.toString(node.getPort()));
         formData.put("ephemeral", "false");
         HttpResponse response = HttpUtil.createPost(url).formStr(formData).executeAsync();
-        if (response.getStatus() != ResultCodeEnum.SUCCESS.getCode()) {
+        if (response.getStatus() != HttpStatus.OK.value()) {
             Console.error(String.format("url : %s register error param : %s", url, node));
         }
     }
@@ -65,7 +65,7 @@ public class NacosServiceRegistry extends AbstractServiceRegistry implements Env
         formData.put("port", environment.getProperty("server.port"));
         formData.put("ephemeral", "false");
         HttpResponse response = HttpUtil.createRequest(Method.DELETE, url).formStr(formData).executeAsync();
-        if (response.getStatus() != ResultCodeEnum.SUCCESS.getCode()) {
+        if (response.getStatus() != HttpStatus.OK.value()) {
             Console.error(String.format("url : %s deregister error, form data = %s ", url, formData));
         }
     }
@@ -82,14 +82,14 @@ public class NacosServiceRegistry extends AbstractServiceRegistry implements Env
         params.put("pageSize", "10");
         HttpResponse listServiceResp =
             HttpUtil.createRequest(Method.GET, serviceListUrl).formStr(params).executeAsync();
-        if (listServiceResp.getStatus() == ResultCodeEnum.SUCCESS.getCode()) {
+        if (listServiceResp.getStatus() == HttpStatus.OK.value()) {
             JSONObject jsonObj = JSONUtil.parseObj(listServiceResp.body());
             Integer count = jsonObj.getInt("count");
             List<String> doms = JSONUtil.toList(jsonObj.getJSONArray("doms"), String.class);
             for (String serviceName : doms) {
                 HttpResponse instanceResp =
                     HttpUtil.createRequest(Method.GET, instanceListUrl + "?serviceName=" + serviceName).executeAsync();
-                if (instanceResp.getStatus() == ResultCodeEnum.SUCCESS.getCode()) {
+                if (instanceResp.getStatus() == HttpStatus.OK.value()) {
                     JSONObject instance = JSONUtil.parseObj(instanceResp.body());
                     JSONArray hosts = instance.getJSONArray("hosts");
                     for (Object item : hosts) {
@@ -121,7 +121,7 @@ public class NacosServiceRegistry extends AbstractServiceRegistry implements Env
         beat.putOpt("timestamp", DateUtil.current());
         HttpResponse response = HttpUtil.createRequest(Method.PUT, url + "?" + MapUtil.join(formData, "&", "="))
             .body(beat.toJSONString(0)).executeAsync();
-        if (response.getStatus() != ResultCodeEnum.SUCCESS.getCode()) {
+        if (response.getStatus() != HttpStatus.OK.value()) {
             Console.error(String.format("url : %s beat error param : %s", url, node));
         }
     }

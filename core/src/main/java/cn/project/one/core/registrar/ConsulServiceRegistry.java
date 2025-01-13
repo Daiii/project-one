@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
 
 import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.StrUtil;
@@ -19,7 +20,6 @@ import cn.hutool.json.JSONUtil;
 import cn.project.one.common.Node;
 import cn.project.one.common.config.ConsulProperties;
 import cn.project.one.common.config.ProjectOneProperties;
-import cn.project.one.common.constants.ResultCodeEnum;
 import cn.project.one.common.instance.Instance;
 
 /**
@@ -42,7 +42,7 @@ public class ConsulServiceRegistry extends AbstractServiceRegistry implements En
     public void register(Node node) {
         String url = String.format(URL, consulProperties.getAddress(), consulProperties.getPort()) + REGISTER;
         HttpResponse response = HttpUtil.createRequest(Method.PUT, url).body(JSONUtil.toJsonStr(node)).executeAsync();
-        if (response.getStatus() != ResultCodeEnum.SUCCESS.getCode()) {
+        if (response.getStatus() != HttpStatus.OK.value()) {
             Console.error(String.format("url : %s register error param : %s", url, node));
             Console.error(response);
         }
@@ -52,7 +52,7 @@ public class ConsulServiceRegistry extends AbstractServiceRegistry implements En
     public void deregister(String id) {
         String url = String.format(URL, consulProperties.getAddress(), consulProperties.getPort()) + DEREGISTER + id;
         HttpResponse response = HttpUtil.createRequest(Method.PUT, url).executeAsync();
-        if (response.getStatus() != ResultCodeEnum.SUCCESS.getCode()) {
+        if (response.getStatus() != HttpStatus.OK.value()) {
             Console.error(String.format("url : %s deregister error ", url));
         }
     }
@@ -62,7 +62,7 @@ public class ConsulServiceRegistry extends AbstractServiceRegistry implements En
         String url = String.format(URL, consulProperties.getAddress(), consulProperties.getPort()) + SERVICES;
         HashMap<String, Instance> map = new HashMap<>();
         HttpResponse response = HttpUtil.createRequest(Method.GET, url).executeAsync();
-        if (response.getStatus() == ResultCodeEnum.SUCCESS.getCode()) {
+        if (response.getStatus() == HttpStatus.OK.value()) {
             String responseBody = response.body();
             JSONObject entries = JSONUtil.parseObj(responseBody);
             for (Map.Entry<String, Object> entry : entries) {
