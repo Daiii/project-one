@@ -7,8 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ResultCodeEnum {
 
-    OK(0, ""),
-    SUCCESS(200, ""),
+    OK(0, "Ok"),
+    SUCCESS(200, "Success"),
     NOT_FOUND(404, "Not Found");
 
     private final int code;
