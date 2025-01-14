@@ -1,4 +1,4 @@
-package cn.project.one.common.constants;
+package cn.project.one.common.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +7,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ResultCodeEnum {
 
-    OK(0, ""), SUCCESS(200, ""), NOT_FOUND(404, "Not Found");
+    OK(0, ""),
+    SUCCESS(200, ""),
+    NOT_FOUND(404, "Not Found");
 
     private final int code;
     private final String message;
