@@ -19,9 +19,9 @@ public class BannerApplicationRunner implements ApplicationRunner {
         String serviceAddr = "http://" + InetUtil.getHost() + ":" + port;
         
         Console.log("\n----------------------------------------------------------\n\n\t" +
-                            "项目启动成功！\n\t" +
-                            "项目地址: \t{} \n\t" +
-                            "服务地址: \t{} \n\t" +
+                            "  项目启动成功！\n\t" +
+                            "  项目地址: \t{} \n\t" +
+                            "  服务地址: \t{} \n\t" +
                             "\n----------------------------------------------------------",
                     "https://github.com/Daiii/project-one",
                             serviceAddr);
