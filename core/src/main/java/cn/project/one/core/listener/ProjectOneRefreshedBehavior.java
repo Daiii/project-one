@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
  * @since 2024/7/15
  */
 @RequiredArgsConstructor
-public class ProjectOneRefreshedListener {
+public class ProjectOneRefreshedBehavior {
 
     private final AbstractServiceRegistry serviceRegistry;
 

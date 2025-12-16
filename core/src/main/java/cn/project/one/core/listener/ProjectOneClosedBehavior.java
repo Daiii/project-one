@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class ProjectOneClosedListener {
+public class ProjectOneClosedBehavior {
 
     private final AbstractServiceRegistry serviceRegistry;
 

@@ -4,7 +4,7 @@ import cn.project.one.common.Node;
 import cn.project.one.common.util.InetUtil;
 import cn.project.one.core.registrar.AbstractServiceRegistry;
 
-public class BeatTask implements Runnable {
+public class BeatBehavior implements Runnable {
 
     private final AbstractServiceRegistry serviceRegistry;
 
@@ -14,7 +14,7 @@ public class BeatTask implements Runnable {
         serviceRegistry.beat(node);
     }
 
-    public BeatTask(AbstractServiceRegistry serviceRegistry) {
+    public BeatBehavior(AbstractServiceRegistry serviceRegistry) {
         this.serviceRegistry = serviceRegistry;
     }
 }

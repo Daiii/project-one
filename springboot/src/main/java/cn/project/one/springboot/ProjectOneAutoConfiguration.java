@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import cn.project.one.common.config.ProjectOneProperties;
-import cn.project.one.core.executor.RefreshServiceTask;
-import cn.project.one.core.listener.ProjectOneRefreshedListener;
+import cn.project.one.core.executor.RefreshServiceBehavior;
+import cn.project.one.core.listener.ProjectOneRefreshedBehavior;
 import cn.project.one.core.registrar.AbstractServiceRegistry;
 
 @Configuration(proxyBeanMethods = false)
@@ -16,13 +16,13 @@ import cn.project.one.core.registrar.AbstractServiceRegistry;
 public class ProjectOneAutoConfiguration {
 
     @Bean
-    public ProjectOneRefreshedListener projectOneRefreshedListener(AbstractServiceRegistry serviceRegistry) {
-        return new ProjectOneRefreshedListener(serviceRegistry);
+    public ProjectOneRefreshedBehavior projectOneRefreshedListener(AbstractServiceRegistry serviceRegistry) {
+        return new ProjectOneRefreshedBehavior(serviceRegistry);
     }
 
     @Bean
-    public RefreshServiceTask refreshServiceTask(ProjectOneProperties properties,
-        AbstractServiceRegistry serviceRegistry) {
-        return new RefreshServiceTask(properties, serviceRegistry);
+    public RefreshServiceBehavior refreshServiceTask(ProjectOneProperties properties,
+                                                     AbstractServiceRegistry serviceRegistry) {
+        return new RefreshServiceBehavior(properties, serviceRegistry);
     }
 }

@@ -9,7 +9,7 @@ import cn.project.one.core.registrar.AbstractServiceRegistry;
 /**
  * 刷新节点任务任务
  */
-public class RefreshServiceTask {
+public class RefreshServiceBehavior {
 
     private final ProjectOneProperties properties;
     private final AbstractServiceRegistry serviceRegistry;
@@ -19,10 +19,10 @@ public class RefreshServiceTask {
         CronUtil.setMatchSecond(true);
         CronUtil.start();
         CronUtil.schedule(properties.getCorn(), new RefreshServiceTimer(serviceRegistry));
-        CronUtil.schedule(properties.getBeat(), new BeatTask(serviceRegistry));
+        CronUtil.schedule(properties.getBeat(), new BeatBehavior(serviceRegistry));
     }
 
-    public RefreshServiceTask(ProjectOneProperties properties, AbstractServiceRegistry serviceRegistry) {
+    public RefreshServiceBehavior(ProjectOneProperties properties, AbstractServiceRegistry serviceRegistry) {
         this.properties = properties;
         this.serviceRegistry = serviceRegistry;
     }
