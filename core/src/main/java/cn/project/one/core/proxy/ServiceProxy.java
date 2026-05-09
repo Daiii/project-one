@@ -35,105 +35,81 @@ import cn.project.one.core.loadbalance.RandomLoadBalance;
 public class ServiceProxy implements InvocationHandler {
 
     private static final String URL_FORMAT = "%s:%s%s";
-    private final TimeInterval interval = new TimeInterval();
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) {
+        TimeInterval interval = new TimeInterval();
         interval.start();
+
         Feign feign = method.getDeclaringClass().getAnnotation(Feign.class);
         Mapping mapping = method.getAnnotation(Mapping.class);
-        boolean responseBody = method.isAnnotationPresent(RespBody.class);
         Instance instance = RandomLoadBalance.getInstance().get(ServiceList.getInstance().getGroup(feign.service()));
         String uri = String.format(URL_FORMAT, instance.getAddress(), instance.getPort(), mapping.value());
 
         HttpRequest httpClient = HttpUtil.createRequest(mapping.method(), uri);
+        RequestParams params = parseParams(method, args);
 
+        HttpResponse response =
+            httpClient.body(params.body).formStr(params.formData).headerMap(params.headers, false).execute();
+
+        checkResponse(response, uri, feign, mapping);
+
+        Object result = method.isAnnotationPresent(RespBody.class)
+            ? JSONUtil.toBean(response.body(), method.getReturnType()) : response.body();
+
+        Console.log("Call [{} {}.{}] execute spend [{}]ms return value [{}]", feign.service(),
+            method.getDeclaringClass().getSimpleName(), method.getName(), interval.intervalMs(), result);
+
+        return result;
+    }
+
+    private void checkResponse(HttpResponse response, String uri, Feign feign, Mapping mapping) {
+        if (response.getStatus() == HttpStatus.OK.value()) {
+            return;
+        }
+        if (response.getStatus() == HttpStatus.NOT_FOUND.value()) {
+            throw new ProjectOneException(response.getStatus(),
+                String.format("%s service mapping %s not found.", feign.service(), mapping.value()));
+        }
+        throw new ProjectOneException(response.getStatus(),
+            String.format("call %s error, request: %s", uri, response.body()));
+    }
+
+    /**
+     * 一次性解析方法参数注解，提取 body、formData、headers
+     */
+    private RequestParams parseParams(Method method, Object[] args) {
         String body = "";
         Map<String, String> formData = new HashMap<>();
         Map<String, String> headers = new HashMap<>();
-        String respBody;
+
         if (ArrayUtil.isNotEmpty(args)) {
-            body = body(method, args);
-            formData = formData(method, args);
-            headers = headers(method, args);
-        }
-        HttpResponse response = httpClient.body(body).formStr(formData).headerMap(headers, false).execute();
-        if (response.getStatus() != HttpStatus.OK.value()) {
-            if (response.getStatus() == HttpStatus.NOT_FOUND.value()) {
-                throw new ProjectOneException(response.getStatus(),
-                    String.format(feign.service() + " service mapping " + mapping.value() + " not found. "));
-            } else {
-                throw new ProjectOneException(response.getStatus(),
-                    String.format("call %s error, request : %s", uri, response.body()));
-            }
-        }
-
-        if (responseBody) {
-            return JSONUtil.toBean(response.body(), method.getReturnType());
-        } else {
-            respBody = response.body();
-        }
-
-        Console.log("Call [{} {}.{}] execute spend [{}]ms return value [{}]", feign.service(),
-            method.getDeclaringClass().getSimpleName(), method.getName(), interval.intervalMs(), respBody);
-
-        return respBody;
-    }
-
-    private String body(Method method, Object[] args) {
-        Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-        if (ArrayUtil.isEmpty(parameterAnnotations)) {
-            return null;
-        }
-
-        String body;
-        Map<String, Object> parameters = new HashMap<>();
-        for (Annotation[] parameterAnnotation : parameterAnnotations) {
-            for (int j = 0; j < parameterAnnotation.length; j++) {
-                if (parameterAnnotation[j] instanceof ReqBody) {
-                    body = JSONUtil.toJsonStr(args[j]);
-                    return body;
+            Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+            for (int i = 0; i < parameterAnnotations.length; i++) {
+                for (Annotation annotation : parameterAnnotations[i]) {
+                    if (annotation instanceof ReqBody) {
+                        body = JSONUtil.toJsonStr(args[i]);
+                    } else if (annotation instanceof Param) {
+                        formData.put(((Param)annotation).name(), StrUtil.toString(args[i]));
+                    } else if (annotation instanceof Header) {
+                        Header h = (Header)annotation;
+                        headers.put(h.name(), args[i] == null ? h.defaultValue() : StrUtil.toString(args[i]));
+                    }
                 }
             }
         }
-        body = JSONUtil.toJsonStr(parameters);
-        return body;
+        return new RequestParams(body, formData, headers);
     }
 
-    private Map<String, String> formData(Method method, Object[] args) {
-        Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-        if (ArrayUtil.isEmpty(parameterAnnotations)) {
-            return null;
-        }
+    private static class RequestParams {
+        final String body;
+        final Map<String, String> formData;
+        final Map<String, String> headers;
 
-        Map<String, String> parameters = new HashMap<>();
-        for (Annotation[] parameterAnnotation : parameterAnnotations) {
-            for (int j = 0; j < parameterAnnotation.length; j++) {
-                if (parameterAnnotation[j] instanceof Param) {
-                    Param param = (Param)parameterAnnotation[j];
-                    parameters.put(param.name(), StrUtil.toString(args[j]));
-                }
-            }
+        RequestParams(String body, Map<String, String> formData, Map<String, String> headers) {
+            this.body = body;
+            this.formData = formData;
+            this.headers = headers;
         }
-        return parameters;
-    }
-
-    private Map<String, String> headers(Method method, Object[] args) {
-        Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-        if (ArrayUtil.isEmpty(parameterAnnotations)) {
-            return null;
-        }
-
-        Map<String, String> head = new HashMap<>();
-
-        for (Annotation[] parameterAnnotation : parameterAnnotations) {
-            for (int j = 0; j < parameterAnnotation.length; j++) {
-                if (parameterAnnotation[j] instanceof Header) {
-                    Header header = (Header)parameterAnnotation[j];
-                    head.put(header.name(), args[j] == null ? header.defaultValue() : StrUtil.toString(args[j]));
-                }
-            }
-        }
-        return head;
     }
 }

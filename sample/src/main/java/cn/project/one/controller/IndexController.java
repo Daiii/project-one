@@ -1,6 +1,7 @@
 package cn.project.one.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,8 +11,8 @@ import cn.project.one.service.IndexService;
 @RestController
 public class IndexController {
 
-    @Autowired
-    IndexService indexService;
+    @Resource
+    private IndexService indexService;
 
     @RequestMapping(value = "/")
     @ResponseBody

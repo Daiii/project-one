@@ -11,11 +11,10 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.extra.servlet.JakartaServletUtil;
 import cn.hutool.json.JSONUtil;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 客户端工具类
@@ -33,7 +32,7 @@ public class ServletUtil {
     @SuppressWarnings("deprecation") // 必须使用 APPLICATION_JSON_UTF8_VALUE，否则会乱码
     public static void writeJSON(HttpServletResponse response, Object object) {
         String content = JSONUtil.toJsonStr(object);
-        JakartaServletUtil.write(response, content, MediaType.APPLICATION_JSON_UTF8_VALUE);
+        cn.hutool.extra.servlet.ServletUtil.write(response, content, MediaType.APPLICATION_JSON_UTF8_VALUE);
     }
 
     /**
@@ -87,7 +86,7 @@ public class ServletUtil {
         if (request == null) {
             return null;
         }
-        return JakartaServletUtil.getClientIP(request);
+        return cn.hutool.extra.servlet.ServletUtil.getClientIP(request);
     }
 
     public static boolean isJsonRequest(ServletRequest request) {
@@ -95,19 +94,19 @@ public class ServletUtil {
     }
 
     public static String getBody(HttpServletRequest request) {
-        return JakartaServletUtil.getBody(request);
+        return cn.hutool.extra.servlet.ServletUtil.getBody(request);
     }
 
     public static byte[] getBodyBytes(HttpServletRequest request) {
-        return JakartaServletUtil.getBodyBytes(request);
+        return cn.hutool.extra.servlet.ServletUtil.getBodyBytes(request);
     }
 
     public static String getClientIP(HttpServletRequest request) {
-        return JakartaServletUtil.getClientIP(request);
+        return cn.hutool.extra.servlet.ServletUtil.getClientIP(request);
     }
 
     public static Map<String, String> getParamMap(HttpServletRequest request) {
-        return JakartaServletUtil.getParamMap(request);
+        return cn.hutool.extra.servlet.ServletUtil.getParamMap(request);
     }
 
 }
